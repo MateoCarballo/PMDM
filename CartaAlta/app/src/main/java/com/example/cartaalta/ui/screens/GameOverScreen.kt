@@ -1,4 +1,4 @@
-package com.example.cartaalta
+package com.example.cartaalta.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -33,7 +33,12 @@ fun GameOverScreen(navController: NavController, winner: String?){
             Text(text = "Ha habido un empate!")
         }
         Spacer(modifier = Modifier.height(64.dp))
-        Button(onClick = {navController.popBackStack("home",false)}) {
+        Button(onClick = {
+            navController.navigate("home"){
+                popUpTo("home") {inclusive = true }
+                launchSingleTop = true
+            }}) {
+
             Text(text = "Volver a Inicio")
         }
     }
