@@ -31,18 +31,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(message: String, modifier: Modifier = Modifier) {
-    Text(
-        text = message,
-        modifier = modifier
-    )
-}
-
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun GreetingPreview() {
     CartaAltaTheme {
-        Greeting("Bienvenido a Carta Alta")
+        AppNavigation()
     }
 }
