@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
 import com.example.todolist.ui.theme.TodoListTheme
 
 class MainActivity : ComponentActivity() {
@@ -104,6 +105,23 @@ fun ButtonAddItem(modifier: Modifier) {
 fun LazyColumnList() {
 
 }
+
+@Composable
+fun AppNavigation(){
+    val navController = rememberNavController()
+    NavHost(
+        navController = navController,
+        startDestination = "home"
+    ){
+        composable(AppScreens.HOME.name){ HomeScreen(navController) }
+        composable(AppScreens.GAME.name){ GameScreen(navController) }
+        composable(AppScreens.GAMEOVER.withArgs("{winner}")){
+                navBackStackEntry -> val winner = navBackStackEntry.arguments?.getString("winner")
+            GameOverScreen(navController,winner)
+        }
+    }
+}
+
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
