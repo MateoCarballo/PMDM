@@ -13,7 +13,7 @@ fun AppNavigation(){
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = "home"
+        startDestination = AppScreens.HOME.name
     ){
         composable(AppScreens.HOME.name){ HomeScreen(navController) }
         composable(AppScreens.GAME.name){ GameScreen(navController) }
