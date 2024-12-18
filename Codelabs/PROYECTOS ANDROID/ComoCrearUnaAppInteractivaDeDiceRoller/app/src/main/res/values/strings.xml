@@ -1,5 +1,0 @@
-<resources>
-    <string name="app_name">Dice Roller</string>
-    <string name="roll">Roll</string>
-    <string name="dice_content_description">Dice shows %1$d</string>
-</resources>
