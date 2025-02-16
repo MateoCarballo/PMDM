@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ContadorEstado</string>
+    <!-- Nombres de las pantallas -->
+    <string name="home_screen">homeScreen</string>
+    <string name="counter_Screen">counterScreen</string>
+    <string name="result_Screen">resultScreen</string>
+</resources>
