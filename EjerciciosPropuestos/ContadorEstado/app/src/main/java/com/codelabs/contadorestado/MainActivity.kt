@@ -32,3 +32,11 @@ fun AppNavigationPreview() {
         AppNavigation()
     }
 }
+/*
+Preguntas
+1 - Necesito pasar el navcontroller junto con el modelview o puedo meter la nevagacion dentro del modelview?
+2 - Ubicacion correcta de la clase usada para definir las rutas de las screen?
+3 - Porque usar mutable state of y MutableStateFlow?
+No entiendo porque elevas los contadores al view model pero cambias el mutable de mutable state of a mutableflow
+
+ */

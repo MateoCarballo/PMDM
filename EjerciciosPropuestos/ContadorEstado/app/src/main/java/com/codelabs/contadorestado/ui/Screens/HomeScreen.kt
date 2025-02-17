@@ -13,18 +13,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHost
+import com.codelabs.contadorestado.ui.State.ContadorViewModel
 
 @Composable
 fun HomeScreen(
@@ -49,7 +48,9 @@ fun HomeScreen(
         Spacer(modifier = Modifier.size(30.dp))
 
         Button(
-            onClick = onStart,
+            onClick = {
+                onStart()
+            }
             ) {
             Icon(
                 imageVector = Icons.Default.PlayArrow,
@@ -65,5 +66,5 @@ fun HomeScreen(
 @Composable
 @Preview(showBackground = true, showSystemUi = true)
 fun HomeScreenPreview(){
-    HomeScreen({})
+    HomeScreen(viewModel())
 }
