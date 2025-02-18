@@ -42,7 +42,7 @@ fun AppNavigation(){
         {
             CounterScreen(
                 estado = contadorViewModel,
-                nav = navController
+                rutaUltimaPantalla = {navController.navigate(counterScreen.route)}
             )
         }
         composable(resultScreen.route)

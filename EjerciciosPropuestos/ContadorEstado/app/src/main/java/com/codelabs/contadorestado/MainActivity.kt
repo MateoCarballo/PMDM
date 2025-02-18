@@ -38,5 +38,6 @@ Preguntas
 2 - Ubicacion correcta de la clase usada para definir las rutas de las screen?
 3 - Porque usar mutable state of y MutableStateFlow?
 No entiendo porque elevas los contadores al view model pero cambias el mutable de mutable state of a mutableflow
-
+4 - Cuando pasas una ruta para navegar que concatenas con el simbolo '/' porque lo haces
+5 - Estructura de carpetas
  */

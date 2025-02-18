@@ -8,6 +8,9 @@ import kotlinx.coroutines.flow.update
 
 class ContadorViewModel: ViewModel(), List<NamedNavArgument> {
 
+    //No deberia usar un objeto contador y crear todos los que necesite, de modo que cree
+    //tantos contadores como composable como contadores tenga definidos aqui ?
+
     private val _incrementoContador1 = MutableStateFlow(1)
     val incrementoContador1 : StateFlow<Int> = _incrementoContador1
 

@@ -2,6 +2,7 @@ package com.codelabs.contadorestado.ui.Screens
 
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,18 +36,24 @@ import com.codelabs.contadorestado.ui.State.ContadorViewModel
 
 
 @Composable
-fun CounterScreen(estado: ContadorViewModel,nav : NavController){
+fun CounterScreen(
+    estado: ContadorViewModel,
+    rutaUltimaPantalla : () -> Unit
+){
     Column (
-        modifier = Modifier
-            .fillMaxSize(),
+//        modifier = Modifier
+//            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ){
         TarjetaContador1(estado = estado)
+        Spacer(modifier = Modifier.size(16.dp))
         TarjetaContador2(estado = estado)
         Button(
-            onClick = {nav.navigate()}
-        ) { }
+            onClick = {rutaUltimaPantalla}
+        ) {
+          Text(text = "Mostrar Total")
+        }
     }
 }
 
@@ -54,150 +62,97 @@ fun CounterScreen(estado: ContadorViewModel,nav : NavController){
 fun TarjetaContador1(
     estado : ContadorViewModel,
 ){
-    Column(
-        modifier = Modifier
-            .background(MaterialTheme.colorScheme.primaryContainer)
-            .padding(20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+    )
+    {
+        Text(
+            modifier = Modifier
+                .padding(10.dp) ,
+            text = "Aumento contador 1: ",
+        )
+        TextField(
+            //Aqui podria poner comillas simple y pista
+            value = estado.incrementoContador1.toString(),
+            onValueChange = {
+                estado.cambiarIncremento1(Integer.parseInt(it))
+            },
+            textStyle = MaterialTheme.typography.bodySmall,
+            modifier = Modifier
+                .width(10.dp)
+                .padding(10.dp)
+                .background(Color.Blue)
+        )
+
+        IconButton(
+            onClick = {estado.incrementarContador1()}
         ) {
-            Text(
-                modifier = Modifier.padding(10.dp),
-                text = "Numero de unidades aumentadas \n por cada pulsación"
-            )
-            TextField(
-                //Aqui podria poner comillas simple y pista
-                value = estado.incrementoContador1.toString(),
-                onValueChange = {
-                    estado.cambiarIncremento1(Integer.parseInt(it))
-                },
-                textStyle = MaterialTheme.typography.bodySmall,
-                modifier = Modifier
-                    .width(60.dp)
-                    .padding(10.dp)
-            )
-            Column (
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-            ) {
-                IconButton(
-                    onClick = {estado.incrementarContador1()}
-                ) {
-                    Icon(imageVector = Icons.Default.Add,
-                        contentDescription = "Aumentar contador",)
-                }
-                /*
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Aumentar contador",
-                    modifier = Modifier
-                        .clickable {
-                            sumar
-                        }
-                        .background(MaterialTheme.colorScheme.primaryContainer),
-
-                    )
-                 */
-                Spacer(
-                    modifier = Modifier
-                        .padding(vertical = 5.dp)
-                )
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "Borrar contador",
-                    modifier = Modifier
-                        .clickable {
-                            estado.resetearContadores()
-                        }
-                        .background(MaterialTheme.colorScheme.primaryContainer)
-                        .size(30.dp)
-                        .alpha(0.75f)
-                )
-            }
-
+            Icon(imageVector = Icons.Default.Add,
+                contentDescription = "Aumentar contador",)
+        }
+        Spacer(
+            modifier = Modifier
+                .padding(vertical = 5.dp)
+        )
+        IconButton(
+            onClick = { estado.resetearContadores()}
+        ) {
+            Icon(imageVector = Icons.Default.Delete,
+                contentDescription = "Borrar contador",)
         }
     }
 }
-
 @Composable
 fun TarjetaContador2(
     estado : ContadorViewModel,
 ){
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
 
-    Column(
-        modifier = Modifier
-            .background(MaterialTheme.colorScheme.primaryContainer)
-            .padding(20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
+        )
+    {
+        Text(
+            modifier = Modifier
+                .padding(10.dp) ,
+            text = "Aumento contador 2 : ",
+        )
+        TextField(
+            //Aqui podria poner comillas simple y pista
+            value = estado.incrementoContador2.toString(),
+            onValueChange = {
+                estado.cambiarIncremento2(Integer.parseInt(it))
+            },
+            textStyle = MaterialTheme.typography.bodySmall,
+            modifier = Modifier
+                .width(10.dp)
+                .padding(10.dp)
+        )
+
+
+        IconButton(
+            onClick = {estado.incrementarContador2()}
         ) {
-            Text(
-                modifier = Modifier.padding(10.dp),
-                text = "Numero de unidades aumentadas \n por cada pulsación"
-            )
-            TextField(
-                value = estado.incrementoContador2.toString(),
-                onValueChange = {
-                    estado.cambiarIncremento2(Integer.parseInt(it))
-                },
-                textStyle = MaterialTheme.typography.bodySmall,
-                modifier = Modifier
-                    .width(60.dp)
-                    .padding(10.dp)
-            )
-            Column (
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-            ) {
-                IconButton(
-                    onClick = { estado.incrementoContador2 }
-                ) {
-                    Icon(imageVector = Icons.Default.Add,
-                        contentDescription = "Aumentar contador",)
-                }
-                /*
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Aumentar contador",
-                    modifier = Modifier
-                        .clickable {
-                            sumar
-                        }
-                        .background(MaterialTheme.colorScheme.primaryContainer),
-
-                    )
-                 */
-                Spacer(
-                    modifier = Modifier
-                        .padding(vertical = 5.dp)
-                )
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "Borrar contador",
-                    modifier = Modifier
-                        .clickable {
-                            estado.resetearContadores()
-                        }
-                        .background(MaterialTheme.colorScheme.primaryContainer)
-                        .size(30.dp)
-                        .alpha(0.75f)
-                )
-            }
-
+            Icon(imageVector = Icons.Default.Add,
+                contentDescription = "Aumentar contador",)
+        }
+        Spacer(
+            modifier = Modifier
+                .padding(vertical = 5.dp)
+        )
+        IconButton(
+            onClick = { estado.resetearContadores()}
+        ) {
+            Icon(imageVector = Icons.Default.Delete,
+                contentDescription = "Borrar contador",)
         }
     }
 }
 
+
 @Composable
 @Preview(showBackground = true, showSystemUi = true)
-fun CounterScreenPreview(){
-    CounterScreen(viewModel())
+fun CounterScreenPreview2(){
+    CounterScreen(viewModel(),{})
 }
