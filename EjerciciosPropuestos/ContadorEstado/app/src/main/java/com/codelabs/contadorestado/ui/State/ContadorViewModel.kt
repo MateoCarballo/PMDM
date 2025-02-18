@@ -11,6 +11,7 @@ class ContadorViewModel: ViewModel(), List<NamedNavArgument> {
     //No deberia usar un objeto contador y crear todos los que necesite, de modo que cree
     //tantos contadores como composable como contadores tenga definidos aqui ?
 
+    /*
     private val _incrementoContador1 = MutableStateFlow(1)
     val incrementoContador1 : StateFlow<Int> = _incrementoContador1
 
@@ -22,6 +23,10 @@ class ContadorViewModel: ViewModel(), List<NamedNavArgument> {
 
     private val _acumuladoContador2 = MutableStateFlow(0)
     val acumuladoContador2 : StateFlow<Int> = _acumuladoContador1
+     */
+
+    //TODO lo rompi guacho
+    private val _state :CounterState = rememberState
 
     fun cambiarIncremento1 (incremento: Int = 1){
         _incrementoContador1.update {it}
