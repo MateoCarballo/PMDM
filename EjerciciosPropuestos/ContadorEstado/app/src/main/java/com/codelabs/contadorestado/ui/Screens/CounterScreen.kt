@@ -38,8 +38,11 @@ import kotlinx.coroutines.flow.StateFlow
 
 
 @Composable
-fun CounterScreen(rutaUltimaPantalla : () -> Unit){
+fun CounterScreen(
+    toResultScreen : (Int) -> Unit
+){
     val contadorViewModel: CounterScreenViewModel = viewModel()
+    val counterState = contadorViewModel.state.collectAsState().value
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -48,15 +51,18 @@ fun CounterScreen(rutaUltimaPantalla : () -> Unit){
         verticalArrangement = Arrangement.Center,
     ){
         TarjetaContador1(
-            valorIncremento = contadorViewModel.state.collectAsState().value.incrementoContador1,
-            valorTotal = contadorViewModel.state.collectAsState().value.acumuladoContador1,
-            cambiarIncrementoContador1 = {contadorViewModel.cambiarIncremento()},
+            valorIncremento = counterState.incrementoContador1,
+            valorTotal = counterState.acumuladoContador1,
+            //TODO AQUI ERRROR
+            cambiarIncrementoContador1 = contadorViewModel.cambiarIncremento,
             sumar = {contadorViewModel.incrementarContador()},
             vaciar = {contadorViewModel.resetearContador()},
             )
         Spacer(modifier = Modifier.size(16.dp))
         Button(
-            onClick = {rutaUltimaPantalla()}
+            onClick = {
+                toResultScreen(contadorViewModel.devolverTotal())
+            }
         ) {
           Text(text = "Mostrar Total")
         }
@@ -110,7 +116,9 @@ fun TarjetaContador1(
             //Aqui podria poner comillas simple y pista
             value = valorIncremento.toString(),
             onValueChange = {
-                if (it.isNotEmpty() || it.isNotBlank()) cambiarIncrementoContador1(it.toInt())
+                if (it.isNotEmpty() && it.isNotBlank()){
+                    cambiarIncrementoContador1(it.toInt())
+                }
             },
             textStyle = MaterialTheme.typography.bodySmall,
             modifier = Modifier

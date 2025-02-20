@@ -21,7 +21,7 @@ class CounterScreenViewModel: ViewModel() {
     private val _state = MutableStateFlow(CounterState())
     val state : StateFlow<CounterState> = _state.asStateFlow();
 
-    fun cambiarIncremento (incremento: Int = 1){
+    fun cambiarIncremento (incremento: Int){
         _state.value = _state.value.copy(incrementoContador1 = incremento)
     }
 

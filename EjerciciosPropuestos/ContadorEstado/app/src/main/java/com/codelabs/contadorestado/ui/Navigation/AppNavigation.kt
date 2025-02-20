@@ -2,15 +2,12 @@ package com.codelabs.contadorestado.ui.Navigation
 
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.codelabs.contadorestado.ui.Screens.CounterScreen
 import com.codelabs.contadorestado.ui.Screens.HomeScreen
 import com.codelabs.contadorestado.ui.Screens.ResultScreen
-import com.codelabs.contadorestado.ui.State.CounterScreenViewModel
 
 data class Screen (val route : String = "Sin definir")
 
@@ -39,14 +36,16 @@ fun AppNavigation(){
         }
         composable(counterScreen.route)
         {
-            CounterScreen(rutaUltimaPantalla = {navController.navigate(resultScreen.route)})
+            CounterScreen(
+                toResultScreen = {
+                    navController.navigate(resultScreen.route + "/$")
+                })
         }
-        composable(resultScreen.route)
+        composable(
+            resultScreen.route
+        )
         {
-            val contadorViewModel: CounterScreenViewModel = viewModel()
-            ResultScreen(
-                resultadoSuma = contadorViewModel.devolverTotal(),
-            )
+            ResultScreen()
         }
     }
 
