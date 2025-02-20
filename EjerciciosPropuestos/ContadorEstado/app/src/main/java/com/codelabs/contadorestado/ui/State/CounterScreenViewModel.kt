@@ -37,9 +37,4 @@ class CounterScreenViewModel: ViewModel() {
         return _state.value.acumuladoContador1
     }
 
-    @Composable
-    fun devolverSnapshotEstado() :CounterState{
-        val state : StateFlow<CounterState> = _state.asStateFlow()
-        return state.collectAsState().value
-    }
 }

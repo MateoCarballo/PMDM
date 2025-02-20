@@ -39,14 +39,7 @@ fun AppNavigation(){
         }
         composable(counterScreen.route)
         {
-            val contadorViewModel: CounterScreenViewModel = viewModel()
-            CounterScreen(
-                estadoActual = contadorViewModel.state,
-                sumarContador1 = {contadorViewModel.incrementarContador()},
-                cambiarIncrementoContador1 = {contadorViewModel.cambiarIncremento()},
-                vaciarContador1 = {contadorViewModel.resetearContador()},
-                rutaUltimaPantalla = {navController.navigate(resultScreen.route)}
-            )
+            CounterScreen(rutaUltimaPantalla = {navController.navigate(resultScreen.route)})
         }
         composable(resultScreen.route)
         {

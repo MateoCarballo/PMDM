@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,18 +32,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.codelabs.contadorestado.ui.State.CounterScreenViewModel
 import com.codelabs.contadorestado.ui.State.CounterState
 import kotlinx.coroutines.flow.StateFlow
 
 
 @Composable
-fun CounterScreen(
-    estadoActual: StateFlow<CounterState>,
-    cambiarIncrementoContador1: () -> Unit,
-    sumarContador1: () -> Unit,
-    vaciarContador1: () -> Unit,
-    rutaUltimaPantalla : () -> Unit,
-    ){
+fun CounterScreen(rutaUltimaPantalla : () -> Unit){
+    val contadorViewModel: CounterScreenViewModel = viewModel()
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -50,10 +48,11 @@ fun CounterScreen(
         verticalArrangement = Arrangement.Center,
     ){
         TarjetaContador1(
-            estadoActual = estadoActual,
-            cambiarIncrementoContador1 = { cambiarIncrementoContador1() },
-            sumar = {sumarContador1()},
-            vaciar = {vaciarContador1()},
+            valorIncremento = contadorViewModel.state.collectAsState().value.incrementoContador1,
+            valorTotal = contadorViewModel.state.collectAsState().value.acumuladoContador1,
+            cambiarIncrementoContador1 = {contadorViewModel.cambiarIncremento()},
+            sumar = {contadorViewModel.incrementarContador()},
+            vaciar = {contadorViewModel.resetearContador()},
             )
         Spacer(modifier = Modifier.size(16.dp))
         Button(
@@ -67,7 +66,8 @@ fun CounterScreen(
 
 @Composable
 fun TarjetaContador1(
-    estadoActual: StateFlow<CounterState>,
+    valorIncremento : Int,
+    valorTotal: Int,
     cambiarIncrementoContador1 : (Int) -> Unit,
     sumar : () -> Unit,
     vaciar : () -> Unit,
@@ -84,17 +84,31 @@ fun TarjetaContador1(
         horizontalArrangement = Arrangement.Center,
     )
     {
-        Text(
-            modifier = Modifier
-                .padding(10.dp) ,
-            text = "Aumento contador 1 :\n" +" ${estadoActual.value.incrementoContador1}",
-            fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-            textAlign = TextAlign.Center,
-            // VALE esto text = "Aumento contador 1: $valorTextField",
-        )
+       Column (
+           modifier = Modifier,
+
+       ){
+           Text(
+               modifier = Modifier
+                   .padding(10.dp) ,
+               text = "Aumento contador 1 :\n $valorIncremento",
+               fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+               textAlign = TextAlign.Center,
+               // VALE esto text = "Aumento contador 1: $valorTextField",
+           )
+           Text(
+               modifier = Modifier
+                   .padding(10.dp) ,
+               text = "Valor total del contador:\n $valorTotal",
+               fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+               color = Color.Red,
+               textAlign = TextAlign.Center,
+               // VALE esto text = "Aumento contador 1: $valorTextField",
+           )
+       }
         TextField(
             //Aqui podria poner comillas simple y pista
-            value = estadoActual.value.incrementoContador1.toString(),
+            value = valorIncremento.toString(),
             onValueChange = {
                 if (it.isNotEmpty() || it.isNotBlank()) cambiarIncrementoContador1(it.toInt())
             },
@@ -131,5 +145,5 @@ fun TarjetaContador1(
 @Composable
 @Preview(showBackground = true, showSystemUi = true)
 fun CounterScreenPreview2(){
-    CounterScreen(viewModel(),{},{},{},{})
+    CounterScreen({})
 }
