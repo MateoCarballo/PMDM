@@ -13,7 +13,10 @@ import androidx.compose.ui.unit.sp
 
 
 @Composable
-fun ResultScreen(resultadoSuma : Int = 999999){
+fun ResultScreen(
+    resultadoSuma : Int = 999999,
+    toHomeScreen : () -> Unit,
+){
     Column(
         modifier = Modifier
             .fillMaxSize(),

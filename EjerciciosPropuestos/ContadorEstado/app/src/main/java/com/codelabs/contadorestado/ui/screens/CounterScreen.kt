@@ -50,8 +50,7 @@ fun CounterScreen(
         TarjetaContador1(
             valorIncremento = counterState.incrementoContador1,
             valorTotal = counterState.acumuladoContador1,
-            //TODO AQUI ERRROR
-            //Que es este IT de aquí
+            //TODO preguntar DANI este it se refiere al propio elemento que lo use ?
             cambiarIncrementoContador1 = {contadorViewModel.cambiarIncremento(it)},
             sumar = {contadorViewModel.incrementarContador()},
             vaciar = {contadorViewModel.resetearContador()},

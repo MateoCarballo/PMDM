@@ -4,6 +4,7 @@ package com.codelabs.contadorestado.ui.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.codelabs.contadorestado.ui.screens.CounterScreen
 import com.codelabs.contadorestado.ui.screens.HomeScreen
@@ -36,16 +37,20 @@ fun AppNavigation(){
         }
         composable(counterScreen.route)
         {
+            //TODO preguntar DANI como resolver las rutas con parametros para poder navegar con datos que vengan desde el counterScreen que es quien lo llama
             CounterScreen(
                 toResultScreen = {
-                    navController.navigate(resultScreen.route + "/$")
+                    navController.navigate(resultScreen.route + "/$it")
                 })
         }
         composable(
             resultScreen.route
         )
         {
-            ResultScreen()
+            //TODO preguntar DANI como resolver las rutas con parametros para poder navegar con datos que vengan desde el counterScreen que es quien lo llama
+            ResultScreen(
+                toHomeScreen = { navController.navigate(homeScreen.route) }
+            )
         }
     }
 
