@@ -1,4 +1,4 @@
-package com.codelabs.contadorestado.ui.Screens
+package com.codelabs.contadorestado.ui.screens
 
 
 import androidx.compose.foundation.background
@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -32,9 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.codelabs.contadorestado.ui.State.CounterScreenViewModel
-import com.codelabs.contadorestado.ui.State.CounterState
-import kotlinx.coroutines.flow.StateFlow
+import com.codelabs.contadorestado.ui.state.CounterScreenViewModel
 
 
 @Composable
@@ -54,7 +51,8 @@ fun CounterScreen(
             valorIncremento = counterState.incrementoContador1,
             valorTotal = counterState.acumuladoContador1,
             //TODO AQUI ERRROR
-            cambiarIncrementoContador1 = contadorViewModel.cambiarIncremento,
+            //Que es este IT de aquí
+            cambiarIncrementoContador1 = {contadorViewModel.cambiarIncremento(it)},
             sumar = {contadorViewModel.incrementarContador()},
             vaciar = {contadorViewModel.resetearContador()},
             )
@@ -153,5 +151,5 @@ fun TarjetaContador1(
 @Composable
 @Preview(showBackground = true, showSystemUi = true)
 fun CounterScreenPreview2(){
-    CounterScreen({})
+    CounterScreen {}
 }

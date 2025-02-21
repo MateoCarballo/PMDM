@@ -1,13 +1,13 @@
-package com.codelabs.contadorestado.ui.Navigation
+package com.codelabs.contadorestado.ui.navigation
 
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.codelabs.contadorestado.ui.Screens.CounterScreen
-import com.codelabs.contadorestado.ui.Screens.HomeScreen
-import com.codelabs.contadorestado.ui.Screens.ResultScreen
+import com.codelabs.contadorestado.ui.screens.CounterScreen
+import com.codelabs.contadorestado.ui.screens.HomeScreen
+import com.codelabs.contadorestado.ui.screens.ResultScreen
 
 data class Screen (val route : String = "Sin definir")
 

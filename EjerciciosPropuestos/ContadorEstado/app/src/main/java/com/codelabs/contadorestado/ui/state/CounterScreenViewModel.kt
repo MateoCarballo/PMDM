@@ -1,7 +1,5 @@
-package com.codelabs.contadorestado.ui.State
+package com.codelabs.contadorestado.ui.state
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +16,7 @@ class CounterScreenViewModel: ViewModel() {
     Debo tener un modelo de data class para cada pantalla bajo un mismo viewmodel
     o varios viewmodel uno por cada pantalla cada uno con los dataclass que necesite?
      */
-    private val _state = MutableStateFlow(CounterState())
+    private val _state = MutableStateFlow(CounterState(incrementoContador1 = 1))
     val state : StateFlow<CounterState> = _state.asStateFlow();
 
     fun cambiarIncremento (incremento: Int){

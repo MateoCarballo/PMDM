@@ -1,4 +1,4 @@
-package com.codelabs.contadorestado.ui.Screens
+package com.codelabs.contadorestado.ui.screens
 
 
 import androidx.compose.foundation.layout.Arrangement
