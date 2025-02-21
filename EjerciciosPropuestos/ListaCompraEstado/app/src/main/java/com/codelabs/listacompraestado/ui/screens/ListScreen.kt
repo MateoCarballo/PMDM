@@ -14,6 +14,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -113,21 +116,21 @@ fun TarjetaItem(
     cantidad: String,
 ) {
     Row (
-
+        modifier = Modifier
+            .padding(16.dp)
+            .border(
+                width = 2.dp,
+                color = Color.Black,
+                shape = RoundedCornerShape(16.dp),
+            )
+            .clip(RoundedCornerShape(16.dp))
+            .background(color = Color.LightGray)
+            .padding(16.dp)
+            .fillMaxWidth()
+            .padding(10.dp),
     ){
         Column(
-            modifier = Modifier
-                .padding(16.dp)
-                .border(
-                    width = 2.dp,
-                    color = Color.Black,
-                    shape = RoundedCornerShape(16.dp),
-                )
-                .clip(RoundedCornerShape(16.dp))
-                .background(color = Color.LightGray)
-                .padding(16.dp)
-                .fillMaxWidth()
-                .padding(10.dp),
+            //Modificadores de la columna de datos item
         )
         {
             Text(
@@ -145,6 +148,35 @@ fun TarjetaItem(
                 text = "Cantidad: $cantidad"
             )
 
+        }
+        Column (
+
+        ) {
+            IconButton(
+                onClick = {}
+            ) {
+                Icon(
+                    //TODO
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Seleccionar"
+                )
+            }
+            IconButton(
+                onClick = {}
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Borrar"
+                )
+            }
+            IconButton(
+                onClick = {}
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Info,
+                    contentDescription = "Info"
+                )
+            }
         }
     }
 }
