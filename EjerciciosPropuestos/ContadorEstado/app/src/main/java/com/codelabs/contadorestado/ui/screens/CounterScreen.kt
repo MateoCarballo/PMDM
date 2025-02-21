@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.codelabs.contadorestado.ui.state.CounterScreenViewModel
 
-
 @Composable
 fun CounterScreen(
     toResultScreen : (Int) -> Unit
@@ -50,7 +49,8 @@ fun CounterScreen(
         TarjetaContador1(
             valorIncremento = counterState.incrementoContador1,
             valorTotal = counterState.acumuladoContador1,
-            //TODO preguntar DANI este it se refiere al propio elemento que lo use ?
+            //TODO preguntar DANI este it se refiere,
+            // al propio elemento que lo use ?
             cambiarIncrementoContador1 = {contadorViewModel.cambiarIncremento(it)},
             sumar = {contadorViewModel.incrementarContador()},
             vaciar = {contadorViewModel.resetearContador()},

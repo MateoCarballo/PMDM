@@ -4,7 +4,6 @@ package com.codelabs.contadorestado.ui.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.codelabs.contadorestado.ui.screens.CounterScreen
 import com.codelabs.contadorestado.ui.screens.HomeScreen
@@ -28,7 +27,6 @@ fun AppNavigation(){
             route = homeScreen.route
         )
         {
-
             HomeScreen(
                 onStart = {
                     navController.navigate(counterScreen.route)
@@ -37,19 +35,25 @@ fun AppNavigation(){
         }
         composable(counterScreen.route)
         {
-            //TODO preguntar DANI como resolver las rutas con parametros para poder navegar con datos que vengan desde el counterScreen que es quien lo llama
+            //TODO preguntar DANI como resolver las rutas
+            // con parametros para poder navegar con datos
+            // que vengan desde el counterScreen que es quien
+            // lo llama
             CounterScreen(
                 toResultScreen = {
-                    navController.navigate(resultScreen.route + "/$it")
+                    navController.navigate(resultScreen.route)
                 })
         }
-        composable(
-            resultScreen.route
-        )
+        composable(resultScreen.route + "/{resultado}")
         {
-            //TODO preguntar DANI como resolver las rutas con parametros para poder navegar con datos que vengan desde el counterScreen que es quien lo llama
+            //TODO preguntar DANI como resolver las rutas
+            // con parametros para poder navegar,
+            // con datos que vengan desde el counterScreen
+            // que es quien lo llama
             ResultScreen(
-                toHomeScreen = { navController.navigate(homeScreen.route) }
+                toHomeScreen = {
+                    navController.navigate(homeScreen.route)
+                }
             )
         }
     }

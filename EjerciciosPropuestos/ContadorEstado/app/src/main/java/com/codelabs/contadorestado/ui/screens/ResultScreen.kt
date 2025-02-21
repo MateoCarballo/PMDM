@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun ResultScreen(
-    resultadoSuma : Int = 999999,
     toHomeScreen : () -> Unit,
 ){
     Column(
@@ -26,7 +25,8 @@ fun ResultScreen(
         Text(
             modifier = Modifier
                 .padding(30.dp),
-            text = "El valor del contador es $resultadoSuma",
+            //TODO Como paso de la pantalla anterior el resultado suma de los contadores ruta/parametro
+            text = "El valor del contador es $/parametro",
             fontSize = 24.sp,
         )
     }
