@@ -1,7 +1,6 @@
 package com.codelabs.contadorestado.ui.state
 
 import androidx.lifecycle.ViewModel
-import com.codelabs.contadorestado.ui.State.CounterState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun ResultScreen(
     toHomeScreen : () -> Unit,
+    resultado: Int,
 ){
     Column(
         modifier = Modifier
