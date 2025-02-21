@@ -43,7 +43,7 @@ fun AppNavigation(){
             // lo llama
             CounterScreen(
                 toResultScreen = {
-                    navController.navigate(resultScreen.route)
+                    navController.navigate(resultScreen.route + "/{resultado}")
                 })
         }
         composable(

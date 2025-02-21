@@ -58,6 +58,7 @@ fun CounterScreen(
         Spacer(modifier = Modifier.size(16.dp))
         Button(
             onClick = {
+                //TODO porque rompe al navegar ??
                 toResultScreen(contadorViewModel.devolverTotal())
             }
         ) {
