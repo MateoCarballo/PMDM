@@ -128,6 +128,8 @@ fun TarjetaItem(
             .padding(16.dp)
             .fillMaxWidth()
             .padding(10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
     ){
         Column(
             //Modificadores de la columna de datos item
@@ -152,15 +154,6 @@ fun TarjetaItem(
         Column (
 
         ) {
-            IconButton(
-                onClick = {}
-            ) {
-                Icon(
-                    //TODO
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "Seleccionar"
-                )
-            }
             IconButton(
                 onClick = {}
             ) {
