@@ -34,7 +34,8 @@ class listaCompraViewModel : ViewModel(){
         _state.value = _state.value.copy(lista = listaCopiada)
     }
 
-    fun eliminarElemento(){
-
+    fun eliminarElemento(index: Int){
+        val listaEliminadoElemento = _state.value.lista.toMutableList().apply { removeAt(index) }
+        _state.value = _state.value.copy(lista = listaEliminadoElemento)
     }
 }
