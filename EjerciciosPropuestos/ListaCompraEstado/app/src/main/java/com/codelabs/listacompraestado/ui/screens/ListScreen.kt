@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
 import com.codelabs.listacompraestado.ui.data.ItemCompra
 import com.codelabs.listacompraestado.ui.state.StateListaCompra
 import com.codelabs.listacompraestado.ui.state.listaCompraViewModel
@@ -39,7 +40,7 @@ import com.codelabs.listacompraestado.ui.state.listaCompraViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListScreen() {
-    val vmListScreen = listaCompraViewModel()
+    val vmListScreen: listaCompraViewModel = ViewModel()
     val stateListScreen = vmListScreen.state.collectAsState().value
 
     Scaffold(
@@ -110,8 +111,11 @@ fun BodyContent(
                 cantidad = listaElementos[index].cantidad,
                 index = index,
                 eliminarItem = {
-                    index -> eliminarItem(index)
-                    Toast.makeText(context, "Elemento ${listaElementos[index].nombre} eliminado", Toast.LENGTH_SHORT).show()
+                    indice -> eliminarItem(indice)
+                    Toast.makeText(
+                        context,
+                        "Elemento ${listaElementos[index].nombre} eliminado",
+                        Toast.LENGTH_SHORT).show()
                 }
             )
         }
