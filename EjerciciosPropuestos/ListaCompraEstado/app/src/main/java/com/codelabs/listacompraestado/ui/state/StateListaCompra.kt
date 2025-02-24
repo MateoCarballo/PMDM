@@ -4,7 +4,9 @@ import android.content.ClipData.Item
 import com.codelabs.listacompraestado.ui.data.ItemCompra
 
 data class StateListaCompra (
-    val mostrarDialogo: Boolean = false,
+    val mostrarDialogoAñadirItem: Boolean = false,
+    val mostrarDialogoInfoItem: Boolean = false,
+    val indexMuestraInfo: Int = -1,
     val nombreItem: String = "",
     val precioItem: String = "",
     val cantidadItem: String = "",

@@ -1,6 +1,5 @@
 package com.codelabs.listacompraestado.ui.screens
 
-import android.content.ClipData.Item
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -27,9 +26,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -45,6 +44,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import com.codelabs.listacompraestado.ui.data.ItemCompra
 import com.codelabs.listacompraestado.ui.state.StateListaCompra
 import com.codelabs.listacompraestado.ui.state.listaCompraViewModel
@@ -79,7 +79,7 @@ fun ListScreen() {
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    vmListScreen.cambiarEstadoDialogo()
+                    vmListScreen.cambiarEstadoDialogoAñadirItem()
                 }
             ) {
                 Icon(
@@ -103,10 +103,13 @@ fun ListScreen() {
             BodyContent(
                 modifier = Modifier.padding(it),
                 listaElementos = vmListScreen.state, // .collectAsState().value.lista
-                añadirItem = {item -> vmListScreen.añadirItem(item)},
+                añadirItem = { item -> vmListScreen.añadirItem(item) },
                 eliminarItem = { indice -> vmListScreen.eliminarElemento(indice) },
-                tengoQueMostrarDialogo = vmListScreen.state.collectAsState().value.mostrarDialogo,
-                cambiarEstadoDialogo = {vmListScreen.cambiarEstadoDialogo()}
+                mostrarDialogoNuevoItem = vmListScreen.state.collectAsState().value.mostrarDialogoAñadirItem,
+                cambiarEstadoDialogoNuevoItem = { vmListScreen.cambiarEstadoDialogoAñadirItem() },
+                mostrarDialogoInfoItem = vmListScreen.state.collectAsState().value.mostrarDialogoInfoItem,
+                cambiarEstadoDialogoInfoItem = {index -> vmListScreen.cambiarEstadoDialogoInfoItem(index) },
+                obtenerItemPorIndice = {index -> vmListScreen.encontrarElemento(index)}
             )
         }
     )
@@ -119,17 +122,22 @@ fun BodyContent(
     listaElementos: StateFlow<StateListaCompra>,
     añadirItem: (ItemCompra) -> Unit,
     eliminarItem: (Int) -> Unit,
-    tengoQueMostrarDialogo: Boolean,
-    cambiarEstadoDialogo: () -> Unit,
-) {
+    mostrarDialogoNuevoItem: Boolean,
+    cambiarEstadoDialogoNuevoItem: () -> Unit,
+    mostrarDialogoInfoItem: Boolean,
+    cambiarEstadoDialogoInfoItem: (Int) -> Unit,
+    obtenerItemPorIndice: (Int) -> ItemCompra,
+
+
+    ) {
     val context = LocalContext.current
     val listaParaLazyColumn = listaElementos.collectAsState().value.lista
 
-    if (tengoQueMostrarDialogo) {
+    if (mostrarDialogoNuevoItem) {
         DialogoAñadirItem(
-            cambiarEstadoDialogo = {cambiarEstadoDialogo() },
+            cambiarEstadoDialogo = { cambiarEstadoDialogoNuevoItem() },
             alConfirmar = { nombre, precio, cantidad ->
-               añadirItem(ItemCompra(nombre, precio, cantidad))
+                añadirItem(ItemCompra(nombre, precio, cantidad))
             }
         )
     }
@@ -155,7 +163,10 @@ fun BodyContent(
                         "Elemento ${listaParaLazyColumn[index].nombre} eliminado",
                         Toast.LENGTH_SHORT
                     ).show()
-                }
+                },
+                itemPorId = obtenerItemPorIndice,
+                cambiarEstadoDialogoInfoItem = {cambiarEstadoDialogoInfoItem()},
+                cambia
             )
         }
 
@@ -217,6 +228,37 @@ fun DialogoAñadirItem(
     )
 }
 
+@Composable
+fun DialogoInformacionItem(
+    cambiarEstadoDialogo: () -> Unit,
+    item: ItemCompra,
+) {
+    Dialog(onDismissRequest = cambiarEstadoDialogo) {
+        Surface(
+            shape = MaterialTheme.shapes.medium,
+            color = MaterialTheme.colorScheme.background,
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text("Detalles del Item", style = MaterialTheme.typography.titleLarge)
+                Text("Nombre: ${item.nombre}")
+                Text("Precio: ${item.precio}")
+                Text("Cantidad: ${item.cantidad}")
+
+                Button(
+                    onClick = cambiarEstadoDialogo,
+                    modifier = Modifier.padding(top = 16.dp)
+                ) {
+                    Text("Cerrar")
+                }
+            }
+        }
+    }
+
+}
+
 
 @Composable
 fun TarjetaItem(
@@ -224,8 +266,19 @@ fun TarjetaItem(
     precio: String,
     cantidad: String,
     index: Int,
-    eliminarItem: (Int) -> Unit
+    eliminarItem: (Int) -> Unit,
+    itemPorId: (Int) -> ItemCompra,
+    mostrarDialogoInfoItem: Boolean,
+    cambiarEstadoDialogoInfoItem: (Int) -> Unit,
 ) {
+
+    if (mostrarDialogoInfoItem) {
+        DialogoInformacionItem(
+            cambiarEstadoDialogo = { cambiarEstadoDialogoInfoItem(index) },
+            item = itemPorId(index)
+        )
+    }
+
     Row(
         modifier = Modifier
             .padding(16.dp)
@@ -278,7 +331,9 @@ fun TarjetaItem(
                 )
             }
             IconButton(
-                onClick = {}
+                onClick = {
+                    cambiarEstadoDialogoInfoItem(index)
+                }
             ) {
                 Icon(
                     imageVector = Icons.Default.Info,

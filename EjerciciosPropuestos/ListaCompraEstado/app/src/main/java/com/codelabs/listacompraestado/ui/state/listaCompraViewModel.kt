@@ -47,10 +47,22 @@ class listaCompraViewModel : ViewModel(){
         )
     }
 
-    fun cambiarEstadoDialogo(){
+    fun encontrarElemento(index: Int): ItemCompra{
+        return _state.value.lista.get(index)
+    }
+
+    fun cambiarEstadoDialogoAñadirItem(){
         _state.value = _state.value.copy(
             lista = state.value.lista,
-            mostrarDialogo = !state.value.mostrarDialogo,
+            mostrarDialogoAñadirItem = !state.value.mostrarDialogoAñadirItem,
+        )
+    }
+
+    fun cambiarEstadoDialogoInfoItem(indice: Int){
+        _state.value = _state.value.copy(
+            lista = state.value.lista,
+            mostrarDialogoInfoItem = !state.value.mostrarDialogoInfoItem,
+            indexMuestraInfo = indice,
         )
     }
 }
