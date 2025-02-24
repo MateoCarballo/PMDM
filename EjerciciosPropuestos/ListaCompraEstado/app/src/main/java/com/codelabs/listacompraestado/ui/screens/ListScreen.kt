@@ -111,6 +111,8 @@ fun ListScreen() {
                 //DIALOGO INFO INTEM Y ESTADO (SI TIENE QUE COMPONERLO O NO)
                 mostrarDialogoInfoItem = vmListScreen.state.collectAsState().value.mostrarDialogoInfoItem,
                 cambiarEstadoDialogoInfoItem = { vmListScreen.cambiarEstadoDialogoInfoItem() },
+                itemMuestraInfo = vmListScreen.state.collectAsState().value.itemMuestraInfo,
+                definirItemInfo = {index -> vmListScreen.definirItemMuestraInfo(index)}
             )
         }
     )
@@ -127,6 +129,8 @@ fun BodyContent(
     cambiarEstadoDialogoNuevoItem: () -> Unit,
     mostrarDialogoInfoItem: Boolean,
     cambiarEstadoDialogoInfoItem: () -> Unit,
+    itemMuestraInfo: Int,
+    definirItemInfo: (Int) -> Unit
 ) {
     val context = LocalContext.current
     val listaParaLazyColumn = listaElementos.collectAsState().value.lista
@@ -162,6 +166,8 @@ fun BodyContent(
                 },
                 mostrarDialogoInfoItem = mostrarDialogoInfoItem,
                 cambiarEstadoDialogoInfoItem = { cambiarEstadoDialogoInfoItem() },
+                itemMuestraInfo = itemMuestraInfo,
+                definirItemMuestraInfo = {index -> definirItemInfo(index)}
             )
         }
 
@@ -257,14 +263,16 @@ fun DialogoInformacionItem(
 
 @Composable
 fun TarjetaItem(
+    itemMuestraInfo: Int,
     item: ItemCompra,
     index: Int,
     eliminarItem: (Int) -> Unit,
     mostrarDialogoInfoItem: Boolean,
     cambiarEstadoDialogoInfoItem: () -> Unit,
+    definirItemMuestraInfo: (Int) -> Unit,
 ) {
 
-    if (mostrarDialogoInfoItem) {
+    if (mostrarDialogoInfoItem && (index==itemMuestraInfo)) {
         DialogoInformacionItem(
             cambiarEstadoDialogoInfoItem = { cambiarEstadoDialogoInfoItem() },
             item = item,
@@ -309,6 +317,7 @@ fun TarjetaItem(
             IconButton(
                 onClick = {
                     cambiarEstadoDialogoInfoItem()
+                    definirItemMuestraInfo(index)
                 }
             ) {
                 Icon(

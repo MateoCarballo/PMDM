@@ -64,4 +64,10 @@ class listaCompraViewModel : ViewModel(){
             mostrarDialogoInfoItem = !state.value.mostrarDialogoInfoItem,
         )
     }
+
+    fun definirItemMuestraInfo(itemMuestraInfo: Int){
+        _state.value = _state.value.copy(
+            itemMuestraInfo = itemMuestraInfo
+        )
+    }
 }
