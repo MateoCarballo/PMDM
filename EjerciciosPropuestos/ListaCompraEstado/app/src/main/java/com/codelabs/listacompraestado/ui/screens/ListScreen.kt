@@ -105,8 +105,10 @@ fun ListScreen() {
                 listaElementos = vmListScreen.state, // .collectAsState().value.lista
                 añadirItem = { item -> vmListScreen.añadirItem(item) },
                 eliminarItem = { indice -> vmListScreen.eliminarElemento(indice) },
+                //DIALOGO NUEVO ITEM Y ESTADO ( SI TIENE QUE MOSTRARLO/COMPONERLO O NO)
                 mostrarDialogoNuevoItem = vmListScreen.state.collectAsState().value.mostrarDialogoAñadirItem,
                 cambiarEstadoDialogoNuevoItem = { vmListScreen.cambiarEstadoDialogoAñadirItem() },
+                //DIALOGO INFO INTEM Y ESTADO (SI TIENE QUE COMPONERLO O NO)
                 mostrarDialogoInfoItem = vmListScreen.state.collectAsState().value.mostrarDialogoInfoItem,
                 cambiarEstadoDialogoInfoItem = {index -> vmListScreen.cambiarEstadoDialogoInfoItem(index) },
                 obtenerItemPorIndice = {index -> vmListScreen.encontrarElemento(index)}
@@ -127,8 +129,6 @@ fun BodyContent(
     mostrarDialogoInfoItem: Boolean,
     cambiarEstadoDialogoInfoItem: (Int) -> Unit,
     obtenerItemPorIndice: (Int) -> ItemCompra,
-
-
     ) {
     val context = LocalContext.current
     val listaParaLazyColumn = listaElementos.collectAsState().value.lista
@@ -152,9 +152,7 @@ fun BodyContent(
     ) {
         items(listaParaLazyColumn.size) { index ->
             TarjetaItem(
-                nombre = listaParaLazyColumn[index].nombre,
-                precio = listaParaLazyColumn[index].precio,
-                cantidad = listaParaLazyColumn[index].cantidad,
+                item = listaParaLazyColumn[index],
                 index = index,
                 eliminarItem = { indice ->
                     eliminarItem(indice)
@@ -165,8 +163,8 @@ fun BodyContent(
                     ).show()
                 },
                 itemPorId = obtenerItemPorIndice,
-                cambiarEstadoDialogoInfoItem = {cambiarEstadoDialogoInfoItem()},
-                cambia
+                mostrarDialogoInfoItem = mostrarDialogoInfoItem,
+                cambiarEstadoDialogoInfoItem = cambiarEstadoDialogoInfoItem,
             )
         }
 
@@ -230,8 +228,8 @@ fun DialogoAñadirItem(
 
 @Composable
 fun DialogoInformacionItem(
-    cambiarEstadoDialogo: () -> Unit,
-    item: ItemCompra,
+    cambiarEstadoDialogo: (Int) -> Unit,
+    obtenerItem: ItemCompra,
 ) {
     Dialog(onDismissRequest = cambiarEstadoDialogo) {
         Surface(
@@ -243,12 +241,12 @@ fun DialogoInformacionItem(
                 modifier = Modifier.padding(16.dp)
             ) {
                 Text("Detalles del Item", style = MaterialTheme.typography.titleLarge)
-                Text("Nombre: ${item.nombre}")
-                Text("Precio: ${item.precio}")
-                Text("Cantidad: ${item.cantidad}")
+                Text("Nombre: ${obtenerItem.nombre}")
+                Text("Precio: ${obtenerItem.precio}")
+                Text("Cantidad: ${obtenerItem.cantidad}")
 
                 Button(
-                    onClick = cambiarEstadoDialogo,
+                    onClick = cambiarEstadoDialogo(),
                     modifier = Modifier.padding(top = 16.dp)
                 ) {
                     Text("Cerrar")
@@ -262,9 +260,7 @@ fun DialogoInformacionItem(
 
 @Composable
 fun TarjetaItem(
-    nombre: String,
-    precio: String,
-    cantidad: String,
+    item: ItemCompra,
     index: Int,
     eliminarItem: (Int) -> Unit,
     itemPorId: (Int) -> ItemCompra,
@@ -274,8 +270,8 @@ fun TarjetaItem(
 
     if (mostrarDialogoInfoItem) {
         DialogoInformacionItem(
-            cambiarEstadoDialogo = { cambiarEstadoDialogoInfoItem(index) },
-            item = itemPorId(index)
+            cambiarEstadoDialogo = {cambiarEstadoDialogoInfoItem(index)},
+            obtenerItem = itemPorId(index)
         )
     }
 
@@ -301,17 +297,17 @@ fun TarjetaItem(
         {
             Text(
                 modifier = Modifier.padding(bottom = 8.dp),
-                text = nombre,
+                text = item.nombre,
                 fontStyle = MaterialTheme.typography.titleLarge.fontStyle,
                 fontSize = MaterialTheme.typography.titleLarge.fontSize,
             )
             Text(
-                text = "Precio : $precio",
+                text = "Precio : $item.precio",
                 fontStyle = MaterialTheme.typography.titleSmall.fontStyle,
                 fontSize = MaterialTheme.typography.titleSmall.fontSize,
             )
             Text(
-                text = "Cantidad : $cantidad",
+                text = "Cantidad : $item.cantidad",
                 fontStyle = MaterialTheme.typography.titleSmall.fontStyle,
                 fontSize = MaterialTheme.typography.titleSmall.fontSize,
             )
