@@ -53,9 +53,4 @@ class listaCompraViewModel : ViewModel(){
             mostrarDialogo = !state.value.mostrarDialogo,
         )
     }
-
-    // TODO esto podria cogerlo directamente de la copia
-    fun devolverEstadoDialogo(): Boolean{
-        return _state.value.mostrarDialogo
-    }
 }

@@ -1,5 +1,6 @@
 package com.codelabs.listacompraestado.ui.screens
 
+import android.content.ClipData.Item
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -28,9 +29,14 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -52,21 +58,10 @@ fun ListScreen() {
         topBar = {
             TopAppBar(
                 title = {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Text(
-                            text = "Mi App",
-                            color = Color.White
-                        )
-                    }
+                    Text(text = "Mi App", color = MaterialTheme.colorScheme.onPrimary)
                 },
                 navigationIcon = {
-                    IconButton(
-                        onClick = {}
-                    ) {
+                    IconButton(onClick = {}) { //TODO programar volver atrás
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Volver atrás",
@@ -75,9 +70,9 @@ fun ListScreen() {
                     }
                 },
                 colors = topAppBarColors(
-                    Color(0xFF6200EE), // Color de fondo de la TopAppBar
-                    Color.White, // Color del texto del título
-                    Color.White // Color del icono de navegación (flecha)
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
                 )
             )
         },
@@ -85,8 +80,7 @@ fun ListScreen() {
             FloatingActionButton(
                 onClick = {
                     vmListScreen.cambiarEstadoDialogo()
-                },//TODO programar que hace al pulsarse
-                containerColor = MaterialTheme.colorScheme.primary,
+                }
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -109,29 +103,37 @@ fun ListScreen() {
             BodyContent(
                 modifier = Modifier.padding(it),
                 listaElementos = vmListScreen.state, // .collectAsState().value.lista
+                añadirItem = {item -> vmListScreen.añadirItem(item)},
                 eliminarItem = { indice -> vmListScreen.eliminarElemento(indice) },
+                tengoQueMostrarDialogo = vmListScreen.state.collectAsState().value.mostrarDialogo,
+                cambiarEstadoDialogo = {vmListScreen.cambiarEstadoDialogo()}
             )
         }
     )
-    if (vmListScreen.devolverEstadoDialogo()) {
-        DialogoAñadirItem(
-            cambiarEstadoDialogo = { vmListScreen.cambiarEstadoDialogo() },
-            alConfirmar = { nombre, precio, cantidad ->
-                vmListScreen.añadirItem(ItemCompra(nombre, precio, cantidad))
-            }
-        )
-    }
+
 }
 
 @Composable
 fun BodyContent(
     modifier: Modifier = Modifier,
     listaElementos: StateFlow<StateListaCompra>,
+    añadirItem: (ItemCompra) -> Unit,
     eliminarItem: (Int) -> Unit,
+    tengoQueMostrarDialogo: Boolean,
+    cambiarEstadoDialogo: () -> Unit,
 ) {
     val context = LocalContext.current
     val listaParaLazyColumn = listaElementos.collectAsState().value.lista
-    //CampoEntradaItem()
+
+    if (tengoQueMostrarDialogo) {
+        DialogoAñadirItem(
+            cambiarEstadoDialogo = {cambiarEstadoDialogo() },
+            alConfirmar = { nombre, precio, cantidad ->
+               añadirItem(ItemCompra(nombre, precio, cantidad))
+            }
+        )
+    }
+
     LazyColumn(
         modifier = modifier
             .background(color = MaterialTheme.colorScheme.background)
@@ -166,9 +168,9 @@ fun DialogoAñadirItem(
     alConfirmar: (String, String, String) -> Unit
 ) {
     val context = LocalContext.current
-    var nombre: String = ""
-    var precio: String = ""
-    var cantidad: String = ""
+    var nombre by remember { mutableStateOf("") }
+    var precio by remember { mutableStateOf("") }
+    var cantidad by remember { mutableStateOf("") }
 
     AlertDialog(
         onDismissRequest = { cambiarEstadoDialogo() },
@@ -287,7 +289,7 @@ fun TarjetaItem(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true)
 @Composable
 fun PreviewDialogoAñadirItem() {
     DialogoAñadirItem(
