@@ -34,8 +34,28 @@ class listaCompraViewModel : ViewModel(){
         _state.value = _state.value.copy(lista = listaCopiada)
     }
 
+    /*
+    TODO preguntar a Dani por qué no funciona así
     fun eliminarElemento(index: Int){
         val listaEliminadoElemento = _state.value.lista.toMutableList().apply { removeAt(index) }
         _state.value = _state.value.copy(lista = listaEliminadoElemento)
+    }
+     */
+    fun eliminarElemento(index: Int) {
+        _state.value = _state.value.copy(
+            lista = _state.value.lista.filterIndexed { i, _ -> i != index }
+        )
+    }
+
+    fun cambiarEstadoDialogo(){
+        _state.value = _state.value.copy(
+            lista = state.value.lista,
+            mostrarDialogo = !state.value.mostrarDialogo,
+        )
+    }
+
+    // TODO esto podria cogerlo directamente de la copia
+    fun devolverEstadoDialogo(): Boolean{
+        return _state.value.mostrarDialogo
     }
 }

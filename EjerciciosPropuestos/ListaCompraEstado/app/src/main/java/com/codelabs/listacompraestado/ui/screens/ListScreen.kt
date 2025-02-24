@@ -11,14 +11,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -30,19 +36,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
 import com.codelabs.listacompraestado.ui.data.ItemCompra
 import com.codelabs.listacompraestado.ui.state.StateListaCompra
 import com.codelabs.listacompraestado.ui.state.listaCompraViewModel
+import kotlinx.coroutines.flow.StateFlow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListScreen() {
-    val vmListScreen: listaCompraViewModel = ViewModel()
-    val stateListScreen = vmListScreen.state.collectAsState().value
-
+    val vmListScreen = listaCompraViewModel()
     Scaffold(
         topBar = {
             TopAppBar(
@@ -76,26 +81,57 @@ fun ListScreen() {
                 )
             )
         },
-        //TODO pregunta 1
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    vmListScreen.cambiarEstadoDialogo()
+                },//TODO programar que hace al pulsarse
+                containerColor = MaterialTheme.colorScheme.primary,
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Boton añadir items"
+                )
+            }
+        },
+
+        //TODO pregunta 1 no me queda claro si tengo que pasarle,
+        // el viewmodel o su copia,
+        // para que recomponga el estado correctamente no soy,
+        // capaz de eliminar items de la lista
+
+        /*TODO he tenido que modificarlo, antes tenia algo como esto,
+           listaElementos = vmListScreen.state.collectAsState().value.lista,
+           y ahora al hacerlo como una variable dentro del composable si que recompone bien
+        */
+
         content = {
             BodyContent(
                 modifier = Modifier.padding(it),
-                listaElementos = stateListScreen.lista,
+                listaElementos = vmListScreen.state, // .collectAsState().value.lista
                 eliminarItem = { indice -> vmListScreen.eliminarElemento(indice) },
             )
         }
-
     )
+    if (vmListScreen.devolverEstadoDialogo()) {
+        DialogoAñadirItem(
+            cambiarEstadoDialogo = { vmListScreen.cambiarEstadoDialogo() },
+            alConfirmar = { nombre, precio, cantidad ->
+                vmListScreen.añadirItem(ItemCompra(nombre, precio, cantidad))
+            }
+        )
+    }
 }
 
 @Composable
 fun BodyContent(
     modifier: Modifier = Modifier,
-    listaElementos: List<ItemCompra> = StateListaCompra().lista,
+    listaElementos: StateFlow<StateListaCompra>,
     eliminarItem: (Int) -> Unit,
 ) {
     val context = LocalContext.current
-
+    val listaParaLazyColumn = listaElementos.collectAsState().value.lista
+    //CampoEntradaItem()
     LazyColumn(
         modifier = modifier
             .background(color = MaterialTheme.colorScheme.background)
@@ -104,24 +140,81 @@ fun BodyContent(
         verticalArrangement = Arrangement.SpaceAround,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        items(listaElementos.size) { index ->
+        items(listaParaLazyColumn.size) { index ->
             TarjetaItem(
-                nombre = listaElementos[index].nombre,
-                precio = listaElementos[index].precio,
-                cantidad = listaElementos[index].cantidad,
+                nombre = listaParaLazyColumn[index].nombre,
+                precio = listaParaLazyColumn[index].precio,
+                cantidad = listaParaLazyColumn[index].cantidad,
                 index = index,
-                eliminarItem = {
-                    indice -> eliminarItem(indice)
+                eliminarItem = { indice ->
+                    eliminarItem(indice)
                     Toast.makeText(
                         context,
-                        "Elemento ${listaElementos[index].nombre} eliminado",
-                        Toast.LENGTH_SHORT).show()
+                        "Elemento ${listaParaLazyColumn[index].nombre} eliminado",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             )
         }
 
     }
 }
+
+@Composable
+fun DialogoAñadirItem(
+    cambiarEstadoDialogo: () -> Unit,
+    alConfirmar: (String, String, String) -> Unit
+) {
+    val context = LocalContext.current
+    var nombre: String = ""
+    var precio: String = ""
+    var cantidad: String = ""
+
+    AlertDialog(
+        onDismissRequest = { cambiarEstadoDialogo() },
+        title = { Text("Añadir nuevo producto") },
+        text = {
+            Column {
+                OutlinedTextField(
+                    value = nombre,
+                    onValueChange = { nombre = it },
+                    label = { Text("Nombre del producto") }
+                )
+                OutlinedTextField(
+                    value = precio,
+                    onValueChange = { precio = it },
+                    label = { Text("Precio") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
+                OutlinedTextField(
+                    value = cantidad,
+                    onValueChange = { cantidad = it },
+                    label = { Text("Cantidad") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    if (nombre.isNotBlank() && precio.isNotBlank() && cantidad.isNotBlank()) {
+                        alConfirmar(nombre, precio, cantidad)
+                        Toast.makeText(context, "Producto añadido", Toast.LENGTH_SHORT).show()
+                        cambiarEstadoDialogo()
+                    }
+                }
+            ) {
+                Text("Añadir")
+            }
+        },
+        dismissButton = {
+            Button(onClick = { cambiarEstadoDialogo() }) {
+                Text("Cancelar")
+            }
+        }
+    )
+}
+
 
 @Composable
 fun TarjetaItem(
@@ -194,14 +287,19 @@ fun TarjetaItem(
     }
 }
 
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun PreviewDialogoAñadirItem() {
+    DialogoAñadirItem(
+        cambiarEstadoDialogo = {},
+        alConfirmar = { _, _, _ -> }
+    )
+}
+
 @Composable
 @Preview(showBackground = true, showSystemUi = true)
 fun PreviewListScreen() {
     ListScreen()
 }
 
-@Composable
-@Preview(showBackground = true)
-fun PreviewBodyContent() {
-    BodyContent(eliminarItem = {})
-}
+
