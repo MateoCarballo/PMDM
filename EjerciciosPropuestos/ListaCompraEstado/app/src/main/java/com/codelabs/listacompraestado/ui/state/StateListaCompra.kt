@@ -6,10 +6,6 @@ import com.codelabs.listacompraestado.ui.data.ItemCompra
 data class StateListaCompra (
     val mostrarDialogoAñadirItem: Boolean = false,
     val mostrarDialogoInfoItem: Boolean = false,
-    val indexMuestraInfo: Int = -1,
-    val nombreItem: String = "",
-    val precioItem: String = "",
-    val cantidadItem: String = "",
     val lista : List<ItemCompra> = listOf(
         ItemCompra(
             nombre = "Patatas",
