@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.codelabs.listacompraestado.ui.screens.ListScreen
 import com.codelabs.listacompraestado.ui.theme.ListaCompraEstadoTheme
+import com.pmdm.ejemplorapidonavegacion.ui.navigation.NavigationGrapho
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +38,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ListaCompraEstadoTheme() {
                 Surface(color = MaterialTheme.colorScheme.background) {
-                ListScreen()
+                    NavigationGrapho()
                 }
             }
         }
@@ -48,5 +49,5 @@ class MainActivity : ComponentActivity() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewMyApp() {
-    ListScreen()
+    NavigationGrapho()
 }

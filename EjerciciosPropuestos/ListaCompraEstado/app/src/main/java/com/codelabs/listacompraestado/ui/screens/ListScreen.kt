@@ -52,16 +52,20 @@ import kotlinx.coroutines.flow.StateFlow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ListScreen() {
+fun ListScreen(
+    toHomeScreen: () -> Unit
+) {
     val vmListScreen = listaCompraViewModel()
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = "Mi App", color = MaterialTheme.colorScheme.onPrimary)
+                    Text(text = "Lista de la compra", color = MaterialTheme.colorScheme.onPrimary)
                 },
                 navigationIcon = {
-                    IconButton(onClick = {}) { //TODO programar volver atrás
+                    IconButton(onClick = {
+                        toHomeScreen()
+                    }) { //TODO programar volver atrás
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Volver atrás",
@@ -342,7 +346,7 @@ fun PreviewDialogoAñadirItem() {
 @Composable
 @Preview(showBackground = true, showSystemUi = true)
 fun PreviewListScreen() {
-    ListScreen()
+    ListScreen({})
 }
 
 
