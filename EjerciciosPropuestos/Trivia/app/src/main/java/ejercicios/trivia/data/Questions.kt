@@ -146,7 +146,7 @@ class Questions {
             )
         )
         fun getRandomQuestion(): Question{
-            return f1Questions[(10..50).random()]
+            return f1Questions[(0..19).random()]
         }
         fun getOneQuestion(index: Int): Question{
             return f1Questions[index]

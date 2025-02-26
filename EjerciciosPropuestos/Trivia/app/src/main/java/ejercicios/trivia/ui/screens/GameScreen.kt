@@ -1,6 +1,6 @@
 package ejercicios.trivia.ui.screens
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,16 +10,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.node.ModifierNodeElement
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ejercicios.trivia.data.Question
@@ -30,7 +31,7 @@ import ejercicios.trivia.ui.state.TrivialViewModel
 fun GameScreen(
     modifier: Modifier,
 ) {
-    val trivialVM = TrivialViewModel()
+    val trivialVM: TrivialViewModel = remember { TrivialViewModel() }
     val state = trivialVM.state.collectAsState()
     Column(
         modifier = Modifier
@@ -40,26 +41,47 @@ fun GameScreen(
         verticalArrangement = Arrangement.Center,
     ) {
         Text(
-            //Numero de pregunta
             text = "Pregunta ${state.value.usedQuestions.size + 1} / ${state.value.rounds}",
             fontSize = MaterialTheme.typography.headlineSmall.fontSize,
         )
         Spacer(modifier = Modifier.height(16.dp))
         Question(
-            question = trivialVM.getQuestion(),
-            isAnswered = { trivialVM.isAnswered() },
-            isCorrect = { index -> trivialVM.isCorrect(index) },
-            changeAnswerStatus = { trivialVM.changeAnswerValue() },
+            question = state.value.question,
+            selectedNumerIndex = state.value.selectedAnswer,
+            isAnswered = state.value.answeredQuestion,
+            amICorrect = {numberOption -> trivialVM.amICorrect(numerOption)},
+            selectOption = { index -> trivialVM.selectOption(index) }
         )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Boton para confirmar la respuesta
+        Button(
+            enabled = state.value.selectedAnswer != -1,
+            modifier = Modifier
+                .fillMaxWidth(),
+            onClick = {
+                trivialVM.changeAnsweredQuestionValue()
+                if (state.value.answeredQuestion) {
+                    trivialVM.updateQuesion()
+                    trivialVM.addCorrectAnswer()
+                }
+            }
+        ) {
+            Text(
+                text = if (state.value.answeredQuestion) "Continuar" else "Responder"
+            )
+        }
     }
 }
 
 @Composable
 fun Question(
     question: Question = Questions.getRandomQuestion(),
-    isAnswered: () -> Boolean,
-    isCorrect: (Int) -> Boolean,
-    changeAnswerStatus: () -> Unit,
+    selectedNumerIndex: Int,
+    isAnswered: Boolean,
+    amICorrect: (Int) -> Boolean,
+    selectOption: (Int) -> Unit,
 ) {
     Card(
         shape = RoundedCornerShape(8.dp),
@@ -74,56 +96,58 @@ fun Question(
                 text = question.questionText,
                 style = MaterialTheme.typography.bodyLarge
             )
+
             Spacer(modifier = Modifier.height(16.dp))
 
             for ((index, option) in question.options.withIndex()) {
                 Option(
                     numberOption = index,
-                    option = option,
+                    optionText = option,
                     isAnswered = isAnswered,
-                    isCorrect = isCorrect,
-                    changeAnswerStatus = changeAnswerStatus
+                    amICorrect = amICorrect,
+                    selectOption = { optionSelected -> selectOption(optionSelected) },
+                    selectNumberIndex = selectedNumerIndex,
                 )
             }
         }
 
     }
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    Button(
-        modifier = Modifier
-            .fillMaxWidth(),
-        onClick = changeAnswerStatus
-    ) {
-        Text(
-            text = "Responder"
-        )
-    }
 }
 
 @Composable
 fun Option(
+    selectNumberIndex: Int,
     numberOption: Int,
-    option: String,
-    isAnswered: () -> Boolean,
-    isCorrect: (Int) -> Boolean,
-    changeAnswerStatus: () -> Unit,
+    optionText: String,
+    isAnswered: Boolean,
+    amICorrect: (Int) -> Boolean,
+    selectOption: (Int) -> Unit
 ) {
-    val backGroundColor = when{
-        isAnswered() && isCorrect(numberOption) -> Color.Green
-        isAnswered() && !isCorrect(numberOption) -> Color.Red
+    val backGroundColor = when {
+        isAnswered && amICorrect(numberOption) -> Color.Green
+        isAnswered && !amICorrect(numberOption) -> Color.Red
         else -> Color.Transparent
-
-
     }
-    Button(
-        onClick = changeAnswerStatus,
-        modifier = Modifier.background(backGroundColor)
 
+    val border = Modifier.border(2.dp,Color.DarkGray, RoundedCornerShape(8.dp))
+
+    val textColor = when {
+        backGroundColor == Color.Green || backGroundColor == Color.Red -> Color.White
+        else -> Color.Black
+    }
+
+    Button(
+        modifier = if (selectNumberIndex == numberOption) border else Modifier,
+        onClick = {
+            selectOption(numberOption)
+        },
+        colors = ButtonDefaults.buttonColors(
+            containerColor = backGroundColor
+        )
     ) {
         Text(
-            text = option
+            text = optionText,
+            color = textColor,
         )
     }
 }
@@ -131,7 +155,7 @@ fun Option(
 @Preview(showBackground = true)
 @Composable
 fun PreviewQuestion() {
-    Question(correctAnswerIndex = 1, options = listOf("op1","op2"), questionText = "question text")
+    Question(correctAnswerIndex = 1, options = listOf("op1", "op2"), questionText = "question text")
 }
 
 @Preview(showSystemUi = true, showBackground = true)
