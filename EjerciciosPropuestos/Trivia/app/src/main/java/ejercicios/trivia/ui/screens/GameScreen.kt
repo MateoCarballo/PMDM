@@ -19,6 +19,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.node.ModifierNodeElement
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ejercicios.trivia.data.Question
@@ -26,7 +27,9 @@ import ejercicios.trivia.data.Questions
 import ejercicios.trivia.ui.state.TrivialViewModel
 
 @Composable
-fun GameScreen() {
+fun GameScreen(
+    modifier: Modifier,
+) {
     val trivialVM = TrivialViewModel()
     val state = trivialVM.state.collectAsState()
     Column(
@@ -38,7 +41,7 @@ fun GameScreen() {
     ) {
         Text(
             //Numero de pregunta
-            text = "Pregunta numero ${state.value.usedQuestions.size + 1}",
+            text = "Pregunta ${state.value.usedQuestions.size + 1} / ${state.value.rounds}",
             fontSize = MaterialTheme.typography.headlineSmall.fontSize,
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -46,7 +49,7 @@ fun GameScreen() {
             question = trivialVM.getQuestion(),
             isAnswered = { trivialVM.isAnswered() },
             isCorrect = { index -> trivialVM.isCorrect(index) },
-            changeAnserStatus = { trivialVM.changeAnswerValue() },
+            changeAnswerStatus = { trivialVM.changeAnswerValue() },
         )
     }
 }
@@ -56,7 +59,7 @@ fun Question(
     question: Question = Questions.getRandomQuestion(),
     isAnswered: () -> Boolean,
     isCorrect: (Int) -> Boolean,
-    changeAnserStatus: () -> Unit,
+    changeAnswerStatus: () -> Unit,
 ) {
     Card(
         shape = RoundedCornerShape(8.dp),
@@ -79,7 +82,7 @@ fun Question(
                     option = option,
                     isAnswered = isAnswered,
                     isCorrect = isCorrect,
-                    changeAnserStatus = changeAnserStatus
+                    changeAnswerStatus = changeAnswerStatus
                 )
             }
         }
@@ -91,7 +94,7 @@ fun Question(
     Button(
         modifier = Modifier
             .fillMaxWidth(),
-        onClick = {}
+        onClick = changeAnswerStatus
     ) {
         Text(
             text = "Responder"
@@ -105,13 +108,19 @@ fun Option(
     option: String,
     isAnswered: () -> Boolean,
     isCorrect: (Int) -> Boolean,
-    changeAnserStatus: () -> Unit,
+    changeAnswerStatus: () -> Unit,
 ) {
+    val backGroundColor = when{
+        isAnswered() && isCorrect(numberOption) -> Color.Green
+        isAnswered() && !isCorrect(numberOption) -> Color.Red
+        else -> Color.Transparent
+
+
+    }
     Button(
-        onClick = changeAnserStatus,
-        modifier = if (isAnswered() && isCorrect(numberOption)) Modifier.background(Color.Green) else Modifier.background(
-            Color.Red
-        )
+        onClick = changeAnswerStatus,
+        modifier = Modifier.background(backGroundColor)
+
     ) {
         Text(
             text = option
@@ -128,7 +137,7 @@ fun PreviewQuestion() {
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun PreviewGameScreen() {
-    GameScreen()
+    GameScreen(modifier = Modifier)
 }
 
 
