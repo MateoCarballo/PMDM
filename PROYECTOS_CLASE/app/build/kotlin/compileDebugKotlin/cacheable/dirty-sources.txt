@@ -1,4 +1,0 @@
-C:\Users\Mateo\Desktop\PMDM\PROYECTOS_CLASE\app\src\main\java\com\example\todolist\ui\theme\Type.kt
-C:\Users\Mateo\Desktop\PMDM\PROYECTOS_CLASE\app\src\main\java\com\example\todolist\MainActivity.kt
-C:\Users\Mateo\Desktop\PMDM\PROYECTOS_CLASE\app\src\main\java\com\example\todolist\ui\theme\Color.kt
-C:\Users\Mateo\Desktop\PMDM\PROYECTOS_CLASE\app\src\main\java\com\example\todolist\ui\theme\Theme.kt
