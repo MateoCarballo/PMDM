@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import ejercicios.trivia.navigation.AppNavigation
 import ejercicios.trivia.ui.screens.GameScreen
 import ejercicios.trivia.ui.theme.TriviaTheme
 
@@ -18,9 +19,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             TriviaTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    GameScreen(
-                        modifier = Modifier.padding(innerPadding),
-                    )
+                    AppNavigation()
                 }
             }
         }

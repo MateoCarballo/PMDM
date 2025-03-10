@@ -169,7 +169,7 @@ fun PreviewQuestion() {
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun PreviewGameScreen() {
-    GameScreen(modifier = Modifier)
+    GameScreen({})
 }
 
 
