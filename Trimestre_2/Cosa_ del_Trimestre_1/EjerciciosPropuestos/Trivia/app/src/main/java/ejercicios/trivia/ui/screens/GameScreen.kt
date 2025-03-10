@@ -52,8 +52,8 @@ fun GameScreen(
             isAnswered = state.value.answeredQuestion,
             amICorrect = {numberOption -> trivialVM.amICorrect(numberOption)},
             // TODO Dani porque asi no se ejecuta correctamente ?
-            //selectOption = {trivialVM::selectOption}
-            selectOption = { index -> trivialVM.selectOption(index) }
+            selectOption = trivialVM::selectOption
+            //selectOption = { index -> trivialVM.selectOption(index) }
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -67,12 +67,20 @@ fun GameScreen(
                 trivialVM.changeAnsweredQuestionValue()
                 if (state.value.answeredQuestion) {
                     trivialVM.updateQuesion()
-                    trivialVM.addCorrectAnswer()
+                    if (state.value.correctAnswers == state.value.selectedAnswer)trivialVM.addCorrectAnswer()
+                }
+
+                if (state.value.usedQuestions.size == state.value.rounds) {
+                    // TODO navegar hacia pantalla final
                 }
             }
         ) {
             Text(
-                text = if (state.value.answeredQuestion) "Continuar" else "Responder"
+                text = if(state.value.rounds > state.value.usedQuestions.size) {
+                    if (state.value.answeredQuestion) "Continuar" else "Responder"
+                }else{
+                    "Mostrar Resultados"
+                }
             )
         }
     }
@@ -129,10 +137,9 @@ fun Option(
     val backGroundColor = when {
         isAnswered && amICorrect(numberOption) -> Color.Green
         isAnswered && !amICorrect(numberOption) -> Color.Red
+        selectNumberIndex == numberOption -> Color.LightGray
         else -> Color.Transparent
     }
-
-    val border = Modifier.border(2.dp,Color.DarkGray, RoundedCornerShape(8.dp))
 
     val textColor = when {
         backGroundColor == Color.Green || backGroundColor == Color.Red -> Color.White
@@ -140,7 +147,6 @@ fun Option(
     }
 
     Button(
-        modifier = if (selectNumberIndex == numberOption) border else Modifier,
         onClick = {
             selectOption(numberOption)
         },
