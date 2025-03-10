@@ -28,7 +28,7 @@ import ejercicios.trivia.ui.state.gameScreen.GameScreenViewModel
 
 @Composable
 fun GameScreen(
-    modifier: Modifier,
+    toResultScreen: () -> Unit
 ) {
     val trivialVM: GameScreenViewModel = remember { GameScreenViewModel() }
     val state = trivialVM.state.collectAsState()

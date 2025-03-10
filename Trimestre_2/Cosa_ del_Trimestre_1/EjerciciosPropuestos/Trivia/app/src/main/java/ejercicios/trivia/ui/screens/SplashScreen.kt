@@ -19,19 +19,19 @@ import kotlinx.coroutines.delay
 
 
 @Composable
-fun SplashScreen(){
-
+fun SplashScreen() {
+    SplashEffect()
 }
 
 @Composable
-fun SplashEffect(){
+fun SplashEffect() {
     Column(
         modifier = Modifier
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
 
-    ) {
+        ) {
         Text("Loading ... ")
     }
 }
