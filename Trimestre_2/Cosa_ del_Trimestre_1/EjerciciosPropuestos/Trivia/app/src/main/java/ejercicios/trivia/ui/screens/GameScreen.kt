@@ -1,6 +1,5 @@
 package ejercicios.trivia.ui.screens
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,13 +24,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ejercicios.trivia.data.Question
 import ejercicios.trivia.data.Questions
-import ejercicios.trivia.ui.state.TrivialViewModel
+import ejercicios.trivia.ui.state.gameScreen.GameScreenViewModel
 
 @Composable
 fun GameScreen(
     modifier: Modifier,
 ) {
-    val trivialVM: TrivialViewModel = remember {TrivialViewModel()}
+    val trivialVM: GameScreenViewModel = remember { GameScreenViewModel() }
     val state = trivialVM.state.collectAsState()
 
     Column(

@@ -1,9 +1,9 @@
-package ejercicios.trivia.ui.state
+package ejercicios.trivia.ui.state.gameScreen
 
 import ejercicios.trivia.data.Question
 import ejercicios.trivia.data.Questions
 
-data class TrivialState(
+data class GameScreenState(
     val question: Question = Questions.getRandomQuestion(),
     val rounds: Int = 5,
     val selectedAnswer: Int = -1, // Si le das a responder sin seleccionar seleccionaria la primera

@@ -1,4 +1,4 @@
-package ejercicios.trivia.ui.state
+package ejercicios.trivia.ui.state.gameScreen
 
 import androidx.lifecycle.ViewModel
 import ejercicios.trivia.data.Questions
@@ -7,10 +7,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class TrivialViewModel : ViewModel() {
+class GameScreenViewModel : ViewModel() {
 
-    private val _state = MutableStateFlow(TrivialState())
-    val state: StateFlow<TrivialState> = _state.asStateFlow()
+    private val _state = MutableStateFlow(GameScreenState())
+    val state: StateFlow<GameScreenState> = _state.asStateFlow()
 
     fun updateQuesion() {
         var questionNumber = (0..19).random()
