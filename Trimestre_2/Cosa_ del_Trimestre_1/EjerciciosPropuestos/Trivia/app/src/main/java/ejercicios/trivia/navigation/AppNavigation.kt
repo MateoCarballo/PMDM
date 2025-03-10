@@ -20,11 +20,13 @@ fun AppNavigation() {
         composable(AppScreens.SplashScreen.route) {
             SplashScreen()
         }
+        //TODO pendiente de agregar parametros para navegar con el numero de preguntas
         composable(AppScreens.HomeScreen.route) {
             HomeScreen(
                 toGameScreen = {navController.navigate(AppScreens.GameScreen.route)},
             )
         }
+        //TODO pendiente de agregar parametros para navegar con los aciertos hacia la pantalla resultados
         composable(AppScreens.GameScreen.route) {
             GameScreen(
                 toResultScreen = {navController.navigate(AppScreens.ResultScreen.route)},
