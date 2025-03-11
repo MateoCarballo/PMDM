@@ -18,10 +18,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TriviaTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     AppNavigation()
                 }
             }
         }
     }
-}

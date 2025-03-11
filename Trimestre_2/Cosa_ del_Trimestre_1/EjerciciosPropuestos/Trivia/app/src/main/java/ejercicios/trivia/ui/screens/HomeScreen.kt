@@ -25,13 +25,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ejercicios.trivia.ui.state.homeScreen.HomeScreenViewModel
 
 @Composable
 fun HomeScreen(
     toGameScreen: (String) -> Unit,
+    homeScreenVM: HomeScreenViewModel = viewModel()
 ) {
-    val homeScreenVM: HomeScreenViewModel = remember { HomeScreenViewModel() }
     val state = homeScreenVM.state.collectAsState()
     Column(
         modifier = Modifier.fillMaxSize(),

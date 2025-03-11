@@ -27,12 +27,20 @@ import kotlinx.coroutines.delay
 
 
 @Composable
-fun SplashScreen() {
-    SplashEffect()
+fun SplashScreen(
+    toHomeScreen: () -> Unit,
+) {
+    SplashEffect(toHomeScreen = toHomeScreen)
 }
 
 @Composable
-fun SplashEffect() {
+fun SplashEffect(
+    toHomeScreen: () -> Unit,
+) {
+    LaunchedEffect(Unit) {
+        delay(5000L) // Espera 5 segundos
+        toHomeScreen() // Navega a la siguiente pantalla
+    }
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -55,6 +63,6 @@ fun SplashEffect() {
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun PreviewSplashScreen() {
-    SplashScreen()
+    SplashScreen({})
 }
 

@@ -1,6 +1,5 @@
 package ejercicios.trivia.navigation
 
-import android.R.attr.type
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -18,10 +17,10 @@ fun AppNavigation() {
 
     NavHost(
         navController = navController,
-        startDestination = AppScreens.SplashScreen,
+        startDestination = AppScreens.SplashScreen.route,
     ) {
         composable(AppScreens.SplashScreen.route) {
-            SplashScreen()
+            SplashScreen { navController.navigate(AppScreens.HomeScreen.route) }
         }
         //TODO Aqui quiero pasar el numero de preguntas seleccionado en la pantalla home hacia la pantalla GAMESCREEN
         composable(
@@ -33,22 +32,25 @@ fun AppNavigation() {
         }
         //TODO Aqui quiero pasar como parametro hacia la siguiente pantalla el numero de aciertos y el total de preguntas
         composable(
-            AppScreens.GameScreen.route + "/{correctAnswers}",
+            AppScreens.GameScreen.route + "/{numberOfQuestions}",
             arguments = listOf(
-                navArgument("correctAnswers") { type = NavType.StringType },
                 navArgument("numberOfQuestions") { type = NavType.StringType }
             ),
         ) {
             val numberOfQuestions = it.arguments?.getString("numberOfQuestions") ?: "5"
             GameScreen(
                 toResultScreen = {
-                                 correctAnswers, numberOfQuestions ->
-                    navController.navigate(AppScreens.ResultScreen.route + "/$correctAnswers" + "/$numberOfQuestions") },
+                                 corrects, totalQuestionsNumber ->
+                    navController.navigate(AppScreens.ResultScreen.route + "/$corrects" + "/$totalQuestionsNumber") },
                 totalQuestions = numberOfQuestions,
             )
 
         }
-        composable(AppScreens.ResultScreen.route) {
+        composable(AppScreens.ResultScreen.route+ "/{correctAnswers}" + "/{numberOfQuestions}",
+            arguments = listOf(
+                navArgument("correctAnswers") { type = NavType.StringType },
+                navArgument("numberOfQuestions") { type = NavType.StringType })
+        ) {
             val correctAnswers = it.arguments?.getString("correctAnswers") ?: "-1"
             val numberOfQuestions = it.arguments?.getString("numberOfQuestions") ?: "-1"
             ResultScreen(
