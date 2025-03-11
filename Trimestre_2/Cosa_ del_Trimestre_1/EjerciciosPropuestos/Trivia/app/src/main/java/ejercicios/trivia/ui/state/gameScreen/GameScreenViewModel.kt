@@ -53,4 +53,13 @@ class GameScreenViewModel : ViewModel() {
     fun amICorrect(numerOption: Int) : Boolean{
         return numerOption == _state.value.question.correctAnswerIndex
     }
+
+    fun setNumberOfQuestions(roundsNumber: Int){
+        _state.update {
+            curretState ->
+            curretState.copy(
+                rounds = roundsNumber
+            )
+        }
+    }
 }

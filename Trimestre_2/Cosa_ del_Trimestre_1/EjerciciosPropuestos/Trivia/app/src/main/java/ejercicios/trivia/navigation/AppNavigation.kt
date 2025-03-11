@@ -25,10 +25,7 @@ fun AppNavigation() {
         }
         //TODO Aqui quiero pasar el numero de preguntas seleccionado en la pantalla home hacia la pantalla GAMESCREEN
         composable(
-            AppScreens.HomeScreen.route + "/{numberOfQuestions}",
-            arguments = listOf(
-                navArgument("numberOfQuestions") { type = NavType.StringType },
-            )
+            AppScreens.HomeScreen.route,
         ) {
             HomeScreen(
                 toGameScreen = { numberOfQuestions -> navController.navigate(AppScreens.GameScreen.route + "/$numberOfQuestions") },
@@ -38,21 +35,26 @@ fun AppNavigation() {
         composable(
             AppScreens.GameScreen.route + "/{correctAnswers}",
             arguments = listOf(
-                navArgument("correctAnswers") { type = NavType.StringType }
+                navArgument("correctAnswers") { type = NavType.StringType },
+                navArgument("numberOfQuestions") { type = NavType.StringType }
             ),
         ) {
             val numberOfQuestions = it.arguments?.getString("numberOfQuestions") ?: "5"
             GameScreen(
-                toResultScreen = { correctAnswers -> navController.navigate(AppScreens.ResultScreen.route + "/$correctAnswers") },
-                numberOfQuestions = numberOfQuestions,
+                toResultScreen = {
+                                 correctAnswers, numberOfQuestions ->
+                    navController.navigate(AppScreens.ResultScreen.route + "/$correctAnswers" + "/$numberOfQuestions") },
+                totalQuestions = numberOfQuestions,
             )
 
         }
         composable(AppScreens.ResultScreen.route) {
             val correctAnswers = it.arguments?.getString("correctAnswers") ?: "-1"
+            val numberOfQuestions = it.arguments?.getString("numberOfQuestions") ?: "-1"
             ResultScreen(
                 toHomeScreen = { navController.navigate(AppScreens.HomeScreen.route) },
                 correctAnswers = correctAnswers,
+                numberOfQuestions = numberOfQuestions,
             )
         }
     }

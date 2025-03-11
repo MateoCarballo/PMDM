@@ -28,11 +28,14 @@ import ejercicios.trivia.ui.state.gameScreen.GameScreenViewModel
 
 @Composable
 fun GameScreen(
-    toResultScreen: (String) -> Unit,
-    numberOfQuestions: String
+    toResultScreen: (String,String) -> Unit,
+    totalQuestions: String = "-1",
+
 ) {
     val gameScreenVM: GameScreenViewModel = remember { GameScreenViewModel() }
     val state = gameScreenVM.state.collectAsState()
+
+    gameScreenVM.setNumberOfQuestions(totalQuestions.toInt())
 
     Column(
         modifier = Modifier
@@ -71,7 +74,7 @@ fun GameScreen(
                 }
 
                 if (state.value.usedQuestions.size == state.value.rounds) {
-                    // TODO navegar hacia pantalla final
+                   toResultScreen(state.value.correctAnswers.toString(), state.value.rounds.toString())
                 }
             }
         ) {
@@ -164,13 +167,26 @@ fun Option(
 @Preview(showBackground = true)
 @Composable
 fun PreviewQuestion() {
-    Question(correctAnswerIndex = 1, options = listOf("op1", "op2"), questionText = "question text")
+    Question(
+        question = Question(
+            correctAnswerIndex = 1,
+            options = listOf("Opción 1", "Opción 2", "Opción 3"),
+            questionText = "¿Cuál es la respuesta correcta?"
+        ),
+        selectedNumerIndex = -1,
+        isAnswered = false,
+        amICorrect = { it == 1 },
+        selectOption = {}
+    )
 }
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun PreviewGameScreen() {
-    GameScreen({}, "")
+    GameScreen(
+        toResultScreen = { _, _ -> }, // Se pasa la función correctamente
+        totalQuestions = "5" // Se pasa un valor numérico válido
+    )
 }
 
 
