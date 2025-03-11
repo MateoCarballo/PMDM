@@ -60,7 +60,7 @@ fun HomeScreen(
                 }
             ) {
                 Icon(
-                    imageVector = Icons.Default.KeyboardArrowUp,
+                    imageVector = Icons.Default.KeyboardArrowDown,
                     contentDescription = "Boton añadir",
                 )
             }
@@ -78,7 +78,7 @@ fun HomeScreen(
                 }
             ) {
                 Icon(
-                    imageVector = Icons.Default.KeyboardArrowDown,
+                    imageVector = Icons.Default.KeyboardArrowUp,
                     contentDescription = "Boton añadir",
                 )
             }
