@@ -12,12 +12,21 @@ class HomeScreenViewModel : ViewModel() {
     private val _state = MutableStateFlow(HomeScreenState())
     val state: StateFlow<HomeScreenState> = _state.asStateFlow()
 
-    fun updateRounds(rounds: Int){
+    fun incrementRounds(){
         _state.update {
             currentState ->
             currentState.copy(
-                roundsSelected = rounds,
+                roundsSelected = state.value.roundsSelected + 1,
                 )
+        }
+    }
+
+    fun decrementRounds(){
+        _state.update {
+                currentState ->
+            currentState.copy(
+                roundsSelected = state.value.roundsSelected - 1,
+            )
         }
     }
 }

@@ -4,7 +4,8 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun ResultScreen(
-    toHomeScreen: () -> Unit
+    toHomeScreen: () -> Unit,
+    correctAnswers: String
 ) {
 
 }

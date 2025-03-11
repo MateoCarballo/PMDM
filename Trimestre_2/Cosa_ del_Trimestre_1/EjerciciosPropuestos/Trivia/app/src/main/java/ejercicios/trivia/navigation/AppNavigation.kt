@@ -1,9 +1,12 @@
 package ejercicios.trivia.navigation
 
+import android.R.attr.type
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import ejercicios.trivia.ui.screens.GameScreen
 import ejercicios.trivia.ui.screens.HomeScreen
 import ejercicios.trivia.ui.screens.ResultScreen
@@ -20,23 +23,38 @@ fun AppNavigation() {
         composable(AppScreens.SplashScreen.route) {
             SplashScreen()
         }
-        //TODO pendiente de agregar parametros para navegar con el numero de preguntas
-        composable(AppScreens.HomeScreen.route) {
+        //TODO Aqui quiero pasar el numero de preguntas seleccionado en la pantalla home hacia la pantalla GAMESCREEN
+        composable(
+            AppScreens.HomeScreen.route + "/{numberOfQuestions}",
+            arguments = listOf(
+                navArgument("numberOfQuestions") { type = NavType.StringType },
+            )
+        ) {
             HomeScreen(
-                toGameScreen = {navController.navigate(AppScreens.GameScreen.route)},
+                toGameScreen = { numberOfQuestions -> navController.navigate(AppScreens.GameScreen.route + "/$numberOfQuestions") },
             )
         }
-        //TODO pendiente de agregar parametros para navegar con los aciertos hacia la pantalla resultados
-        composable(AppScreens.GameScreen.route) {
+        //TODO Aqui quiero pasar como parametro hacia la siguiente pantalla el numero de aciertos y el total de preguntas
+        composable(
+            AppScreens.GameScreen.route + "/{correctAnswers}",
+            arguments = listOf(
+                navArgument("correctAnswers") { type = NavType.StringType }
+            ),
+        ) {
+            val numberOfQuestions = it.arguments?.getString("numberOfQuestions") ?: "5"
             GameScreen(
-                toResultScreen = {navController.navigate(AppScreens.ResultScreen.route)},
+                toResultScreen = { correctAnswers -> navController.navigate(AppScreens.ResultScreen.route + "/$correctAnswers") },
+                numberOfQuestions = numberOfQuestions,
             )
 
         }
         composable(AppScreens.ResultScreen.route) {
+            val correctAnswers = it.arguments?.getString("correctAnswers") ?: "-1"
             ResultScreen(
-                toHomeScreen = {navController.navigate(AppScreens.HomeScreen.route)},
+                toHomeScreen = { navController.navigate(AppScreens.HomeScreen.route) },
+                correctAnswers = correctAnswers,
             )
         }
     }
 }
+

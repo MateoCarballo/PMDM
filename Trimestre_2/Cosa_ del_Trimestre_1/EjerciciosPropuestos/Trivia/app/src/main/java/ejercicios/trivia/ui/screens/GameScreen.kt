@@ -28,10 +28,11 @@ import ejercicios.trivia.ui.state.gameScreen.GameScreenViewModel
 
 @Composable
 fun GameScreen(
-    toResultScreen: () -> Unit
+    toResultScreen: (String) -> Unit,
+    numberOfQuestions: String
 ) {
-    val trivialVM: GameScreenViewModel = remember { GameScreenViewModel() }
-    val state = trivialVM.state.collectAsState()
+    val gameScreenVM: GameScreenViewModel = remember { GameScreenViewModel() }
+    val state = gameScreenVM.state.collectAsState()
 
     Column(
         modifier = Modifier
@@ -49,9 +50,9 @@ fun GameScreen(
             question = state.value.question,
             selectedNumerIndex = state.value.selectedAnswer,
             isAnswered = state.value.answeredQuestion,
-            amICorrect = {numberOption -> trivialVM.amICorrect(numberOption)},
+            amICorrect = {numberOption -> gameScreenVM.amICorrect(numberOption)},
             // TODO Dani porque asi no se ejecuta correctamente ?
-            selectOption = trivialVM::selectOption
+            selectOption = gameScreenVM::selectOption
             //selectOption = { index -> trivialVM.selectOption(index) }
         )
 
@@ -63,10 +64,10 @@ fun GameScreen(
             modifier = Modifier
                 .fillMaxWidth(),
             onClick = {
-                trivialVM.changeAnsweredQuestionValue()
+                gameScreenVM.changeAnsweredQuestionValue()
                 if (state.value.answeredQuestion) {
-                    trivialVM.updateQuesion()
-                    if (state.value.correctAnswers == state.value.selectedAnswer)trivialVM.addCorrectAnswer()
+                    gameScreenVM.updateQuesion()
+                    if (state.value.correctAnswers == state.value.selectedAnswer)gameScreenVM.addCorrectAnswer()
                 }
 
                 if (state.value.usedQuestions.size == state.value.rounds) {
@@ -169,7 +170,7 @@ fun PreviewQuestion() {
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun PreviewGameScreen() {
-    GameScreen({})
+    GameScreen({}, "")
 }
 
 
