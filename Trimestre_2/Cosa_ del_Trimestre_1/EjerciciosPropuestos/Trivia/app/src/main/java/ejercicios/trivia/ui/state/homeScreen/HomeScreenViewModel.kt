@@ -19,7 +19,7 @@ class HomeScreenViewModel : ViewModel() {
         _state.update {
             currentState ->
             currentState.copy(
-                roundsSelected = state.value.roundsSelected + 1,
+                roundsSelected = if(state.value.roundsSelected < 20)state.value.roundsSelected + 1 else 20
                 )
         }
     }
@@ -28,7 +28,7 @@ class HomeScreenViewModel : ViewModel() {
         _state.update {
                 currentState ->
             currentState.copy(
-                roundsSelected = state.value.roundsSelected - 1,
+                roundsSelected = if(state.value.roundsSelected > 1)state.value.roundsSelected - 1 else 1,
             )
         }
     }

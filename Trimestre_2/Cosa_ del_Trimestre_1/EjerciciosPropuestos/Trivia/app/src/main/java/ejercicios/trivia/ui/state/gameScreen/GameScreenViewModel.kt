@@ -32,10 +32,6 @@ class GameScreenViewModel : ViewModel() {
         _state.value = _state.value.copy(correctAnswers = _state.value.correctAnswers + 1)
     }
 
-    fun isCorrect(): Boolean{
-        return _state.value.selectedAnswer == _state.value.question.correctAnswerIndex
-    }
-
     fun changeAnsweredQuestionValue(){
         _state.value = _state.value.copy(answeredQuestion = !_state.value.answeredQuestion)
     }

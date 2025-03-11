@@ -15,6 +15,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,13 +29,16 @@ import ejercicios.trivia.ui.state.gameScreen.GameScreenViewModel
 
 @Composable
 fun GameScreen(
-    toResultScreen: (String,String) -> Unit,
+    toResultScreen: (String, String) -> Unit,
     totalQuestions: String = "-1",
     gameScreenVM: GameScreenViewModel = viewModel(),
 ) {
     val state = gameScreenVM.state.collectAsState()
 
-    gameScreenVM.setNumberOfQuestions(totalQuestions.toInt())
+    // Solo se ejecutará la primera vez que se componga la pantalla
+    LaunchedEffect(Unit) {
+        gameScreenVM.setNumberOfQuestions(totalQuestions.toInt())
+    }
 
     Column(
         modifier = Modifier
@@ -52,7 +56,7 @@ fun GameScreen(
             question = state.value.question,
             selectedNumerIndex = state.value.selectedAnswer,
             isAnswered = state.value.answeredQuestion,
-            amICorrect = {numberOption -> gameScreenVM.amICorrect(numberOption)},
+            amICorrect = { numberOption -> gameScreenVM.amICorrect(numberOption) },
             // TODO Dani porque asi no se ejecuta correctamente ?
             selectOption = gameScreenVM::selectOption
             //selectOption = { index -> trivialVM.selectOption(index) }
@@ -66,21 +70,31 @@ fun GameScreen(
             modifier = Modifier
                 .fillMaxWidth(),
             onClick = {
-                gameScreenVM.changeAnsweredQuestionValue()
-                if (state.value.answeredQuestion) {
-                    gameScreenVM.updateQuesion()
-                    if (state.value.correctAnswers == state.value.selectedAnswer)gameScreenVM.addCorrectAnswer()
-                }
+                if (!state.value.answeredQuestion) {
+                    // Primero marca la pregunta como respondida
+                    gameScreenVM.changeAnsweredQuestionValue()
 
-                if (state.value.usedQuestions.size == state.value.rounds) {
-                   toResultScreen(state.value.correctAnswers.toString(), state.value.rounds.toString())
+                    // Si la respuesta es correcta, sumar un punto
+                    if (state.value.selectedAnswer == state.value.question.correctAnswerIndex) {
+                        gameScreenVM.addCorrectAnswer()
+                    }
+                } else {
+                    // Solo avanza si la pregunta ya fue respondida
+                    if (state.value.usedQuestions.size + 1 == state.value.rounds) {
+                        toResultScreen(
+                            state.value.correctAnswers.toString(),
+                            state.value.rounds.toString()
+                        )
+                    } else {
+                        gameScreenVM.updateQuesion()
+                    }
                 }
             }
         ) {
             Text(
-                text = if(state.value.rounds > state.value.usedQuestions.size) {
+                text = if (state.value.rounds > state.value.usedQuestions.size) {
                     if (state.value.answeredQuestion) "Continuar" else "Responder"
-                }else{
+                } else {
                     "Mostrar Resultados"
                 }
             )
