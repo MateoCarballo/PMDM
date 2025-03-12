@@ -3,9 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Necesario para poder conectar con la API-->
-    <uses-permission android:name = "android.permission.INTERNET"/>
-
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Al crear la clase TriviaApplication si queremos que arranque desde ahi
+    tenemos que añadirle el nombre de esa clase que hereda de Application -->
     <application
+        android:name=".TriviaApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -15,6 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Trivia"
         tools:targetApi="31">
+        <!-- android:name=".MainActivity" -->
         <activity
             android:name=".MainActivity"
             android:exported="true"

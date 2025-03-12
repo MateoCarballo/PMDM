@@ -1,10 +1,6 @@
 package ejercicios.trivia.data
 
-data class Question(
-    val questionText: String,
-    val options: List<String>,
-    val correctAnswerIndex: Int
-)
+import ejercicios.trivia.model.Question
 
 class Questions {
     companion object {

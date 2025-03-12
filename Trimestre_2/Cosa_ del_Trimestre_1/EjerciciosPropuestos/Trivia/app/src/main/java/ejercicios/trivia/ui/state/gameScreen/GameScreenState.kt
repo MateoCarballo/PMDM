@@ -1,7 +1,8 @@
 package ejercicios.trivia.ui.state.gameScreen
 
-import ejercicios.trivia.data.Question
+
 import ejercicios.trivia.data.Questions
+import ejercicios.trivia.model.Question
 
 data class GameScreenState(
     val question: Question = Questions.getRandomQuestion(),

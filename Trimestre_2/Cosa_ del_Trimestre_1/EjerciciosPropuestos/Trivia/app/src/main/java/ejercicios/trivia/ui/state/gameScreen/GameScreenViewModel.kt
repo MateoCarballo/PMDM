@@ -1,13 +1,18 @@
 package ejercicios.trivia.ui.state.gameScreen
 
 import androidx.lifecycle.ViewModel
+import ejercicios.trivia.data.QuestionRepository
 import ejercicios.trivia.data.Questions
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-
-class GameScreenViewModel : ViewModel() {
+/*
+TODO Dani retrofit
+Aqui entiendo que tengo que meterle el question repository.
+Pero no necesitaria pasarle solo las preguntas desde la primera pantalla como parametro?
+ */
+class GameScreenViewModel(questionRepository: QuestionRepository) : ViewModel() {
 
     private val _state = MutableStateFlow(GameScreenState())
     val state: StateFlow<GameScreenState> = _state.asStateFlow()
