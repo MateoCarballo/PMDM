@@ -3,7 +3,7 @@ package ejercicios.trivia.model
 data class Question(
     val rawquestionText: String,
     val rawoptions: List<String>,
-    val orrectAnswerIndex: Int
+    val correctAnswerIndex: Int
 ) {
     val questionText: String
         get() = rawquestionText.decodeHtml()

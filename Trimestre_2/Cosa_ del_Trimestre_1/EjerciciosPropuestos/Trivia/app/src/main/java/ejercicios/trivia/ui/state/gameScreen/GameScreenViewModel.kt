@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.update
 /*
 TODO Dani retrofit
 Aqui entiendo que tengo que meterle el question repository.
-Pero no necesitaria pasarle solo las preguntas desde la primera pantalla como parametro?
+ Pero no necesitaria pasarle solo las preguntas desde la primera pantalla como parametro?
  */
 class GameScreenViewModel(questionRepository: QuestionRepository) : ViewModel() {
 
@@ -18,19 +18,8 @@ class GameScreenViewModel(questionRepository: QuestionRepository) : ViewModel() 
     val state: StateFlow<GameScreenState> = _state.asStateFlow()
 
     fun updateQuesion() {
-        var questionNumber = (0..19).random()
-        do{
-            if (_state.value.usedQuestions.contains(questionNumber)) questionNumber = (0..19).random()
-        }while (_state.value.usedQuestions.contains(questionNumber))
-        //TODO Preguntar a Dani porque este metodo y con el copy de antes no me iba
-        _state.update { currentState ->
-            currentState.copy(
-                question = Questions.getOneQuestion(questionNumber),
-                usedQuestions = currentState.usedQuestions + questionNumber,
-                selectedAnswer = -1, // Resetea la selección
-                answeredQuestion = false // Reinicia el estado de respuesta
-            )
-        }
+        //TODO conseguir una pregunta de la API
+
     }
 
     fun addCorrectAnswer(){
