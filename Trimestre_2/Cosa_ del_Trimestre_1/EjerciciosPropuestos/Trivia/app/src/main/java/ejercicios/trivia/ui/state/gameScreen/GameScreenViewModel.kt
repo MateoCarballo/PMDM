@@ -14,11 +14,24 @@ Aqui entiendo que tengo que meterle el question repository.
  */
 class GameScreenViewModel(questionRepository: QuestionRepository) : ViewModel() {
 
-    private val _state = MutableStateFlow(GameScreenState())
+    private val _state = MutableStateFlow(GameScreenState(
+        questionsFromApi = TODO(),
+        question = TODO(),
+        rounds = TODO(),
+        selectedAnswer = TODO(),
+        correctAnswers = TODO(),
+        answeredQuestion = TODO(),
+        usedQuestions = TODO(),
+        gameOver = TODO()
+    ))
     val state: StateFlow<GameScreenState> = _state.asStateFlow()
 
+    fun getAllQuestions(){
+        //TODO Obtener todas las preguntas a la vez
+    }
+    
     fun updateQuesion() {
-        //TODO conseguir una pregunta de la API
+        //TODO conseguir una pregunta de la API. Antes aquí preguntaba a mi clase con preguntas Questions
 
     }
 
