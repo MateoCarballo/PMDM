@@ -46,6 +46,7 @@ fun AppNavigation(
                                  corrects, totalQuestionsNumber ->
                     navController.navigate(AppScreens.ResultScreen.route + "/$corrects" + "/$totalQuestionsNumber") },
                 totalQuestions = numberOfQuestions,
+
             )
 
         }
