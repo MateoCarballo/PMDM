@@ -10,11 +10,11 @@ class ListViewModel : ViewModel() {
     private val _state = MutableStateFlow(ListState())
     val state = _state.asStateFlow()
 
-    fun addNewProduct(newItemName: String, newItemPrice: String) {
-        if (newItemName.isNotBlank() && newItemName.isNotEmpty() && newItemPrice.isNotBlank() && newItemPrice.isNotEmpty() ){
-            val price = newItemPrice.toDoubleOrNull()
-            if (price != null && price > 0){
-                val newProduct = Product(name=newItemName,price = price)
+    fun addNewProduct() {
+        if (_state.value.newItemName.isNotBlank() && _state.value.newItemName.isNotEmpty() && _state.value.newItemPrice.isNotBlank() && _state.value.newItemPrice.isNotEmpty()) {
+            val price = _state.value.newItemPrice.toDoubleOrNull()
+            if (price != null && price > 0) {
+                val newProduct = Product(name = _state.value.newItemName, price = price)
 
                 _state.update {
                     it.copy(
@@ -23,51 +23,115 @@ class ListViewModel : ViewModel() {
                 }
             }
         }
+        updateTotalPrice()
+        updateTotalQuantity()
     }
 
-    fun increaseProduct(productName: String){
-        val productIndex = state.value.addedProducts.indexOfFirst { it.name == productName }
+    fun increaseProduct(productName: String) {
+        val productIndex = _state.value.addedProducts.indexOfFirst { it.name == productName }
 
-        if (state.value.addedProducts[productIndex].quantity <= 99){
-            val updatedProduct = state.value.addedProducts[productIndex].copy(
-                quantity = state.value.addedProducts[productIndex].quantity + 1
+        if (_state.value.addedProducts[productIndex].quantity <= 99) {
+            val updatedProduct = _state.value.addedProducts[productIndex].copy(
+                quantity = _state.value.addedProducts[productIndex].quantity + 1
             )
 
-            val updatedList = state.value.addedProducts.toMutableList().apply {
+            val updatedList = _state.value.addedProducts.toMutableList().apply {
                 this[productIndex] = updatedProduct
             }
 
-            _state.update{
+            _state.update {
                 it.copy(
                     addedProducts = updatedList
                 )
             }
         }
-        
+        updateTotalPrice()
+        updateTotalQuantity()
     }
 
-    fun decreaseProduct(productName: String){
-        val productIndex = state.value.addedProducts.indexOfFirst { it.name == productName }
+    fun decreaseProduct(productName: String) {
+        val productIndex = _state.value.addedProducts.indexOfFirst { it.name == productName }
 
-        if (state.value.addedProducts[productIndex].quantity >= 1){
-            val updatedProduct = state.value.addedProducts[productIndex].copy(
-                quantity = state.value.addedProducts[productIndex].quantity - 1
+        if (_state.value.addedProducts[productIndex].quantity > 1) {
+            val updatedProduct = _state.value.addedProducts[productIndex].copy(
+                quantity = _state.value.addedProducts[productIndex].quantity - 1
             )
 
-            val updatedList = state.value.addedProducts.toMutableList().apply {
+            val updatedList = _state.value.addedProducts.toMutableList().apply {
                 this[productIndex] = updatedProduct
             }
 
-            _state.update{
+            _state.update {
                 it.copy(
                     addedProducts = updatedList
                 )
             }
         }
-
+        updateTotalPrice()
+        updateTotalQuantity()
     }
 
-    fun getProductList(): List<Product>{
+    fun deleteProduct(productName: String) {
+        val updatedList = _state.value.addedProducts.filter { it.name != productName }
+        _state.update {
+            it.copy(
+                addedProducts = updatedList
+            )
+        }
+        updateTotalPrice()
+        updateTotalQuantity()
+    }
+
+    fun changeItemName(newName: String){
+        _state.update{
+            it.copy(
+                newItemName = newName
+            )
+        }
+    }
+
+    fun changePriceValue(newPrice: String){
+        _state.update{
+            it.copy(
+                newItemPrice = newPrice
+            )
+        }
+    }
+
+    fun updateTotalPrice(){
+        _state.update {
+            it.copy(
+                totalPrice = _state.value.addedProducts.sumOf { it.totalPrice }
+            )
+        }
+    }
+
+    fun updateTotalQuantity(){
+        _state.update {
+            it.copy(
+                totalItems = _state.value.addedProducts.sumOf { it.quantity }
+            )
+        }
+    }
+
+    fun isEnabledAddButton(){
+        if (_state.value.newItemName.isNotEmpty() && _state.value.newItemName.isNotBlank()
+            && _state.value.newItemPrice.isNotEmpty() && _state.value.newItemPrice.isNotBlank()){
+            _state.update {
+                it.copy(
+                    enableAddButton = true
+                )
+            }
+        }else{
+            _state.update {
+                it.copy(
+                    enableAddButton = false
+                )
+            }
+        }
+    }
+
+    fun getProductList(): List<Product> {
         return _state.value.addedProducts
     }
 }

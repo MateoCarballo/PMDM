@@ -1,5 +1,7 @@
 package com.codelabs.examenprimertrimestre.ui.theme.screens
 
+import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,27 +11,37 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,13 +49,18 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.codelabs.examenprimertrimestre.data.Product
 import com.codelabs.examenprimertrimestre.ui.theme.state.ListViewModel
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListaCompra(
     toDetailScreen: () -> Unit,
     listScreenVM: ListViewModel = viewModel()
 ) {
-    val state = listScreenVM.state.collectAsState()
+    val listState = listScreenVM.state.collectAsState()
+    LaunchedEffect(Unit) {
+        listScreenVM.updateTotalPrice()
+        listScreenVM.updateTotalQuantity()
+    }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -52,7 +69,9 @@ fun ListaCompra(
                 },
                 navigationIcon = {
                     IconButton(
-                        onClick = { /* Acción de retroceso */ }
+                        onClick = {
+                            //TODO navegar a la anterior
+                        }
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -72,11 +91,27 @@ fun ListaCompra(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
             ) {
-                Text(
-                    text = "Total: $10.00",
-                    modifier = Modifier.padding(16.dp),
-                    color = MaterialTheme.colorScheme.onPrimary
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceAround
                 )
+                {
+                    Text(
+                        text = "Total",
+                        modifier = Modifier.padding(16.dp),
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                    Text(
+                        text = "Cantidad  " + listState.value.totalItems,
+                        modifier = Modifier.padding(16.dp),
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                    Text(
+                        text = "Precio " + listState.value.totalPrice,
+                        modifier = Modifier.padding(16.dp),
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
             }
         }
     ) { paddingValues ->
@@ -88,22 +123,122 @@ fun ListaCompra(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text("Tu lista de compras", fontSize = 20.sp)
-            Spacer(modifier = Modifier.height(16.dp)) // Corregido el modificador
-            Button(onClick = toDetailScreen) {
-                Text("Ir a detalles")
+            Card(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth()
+                    .height(250.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                        .padding(8.dp),
+                    verticalArrangement = Arrangement.Center,
+
+                ) {
+                    Text("Añadir nuevo item con precio", fontSize = 20.sp)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    // Linea para introducir nombre del item
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = "Nombre:",
+                            modifier = Modifier.width(80.dp),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        OutlinedTextField(
+                            value = listState.value.newItemName,
+                            onValueChange = {
+                                listScreenVM.changeItemName(it)
+                                listScreenVM.isEnabledAddButton()
+                            },
+                            placeholder = { Text("Patatas") },
+                            singleLine = true,
+                            modifier = Modifier.weight(1f),
+                            keyboardOptions = KeyboardOptions.Default.copy(
+                                keyboardType = KeyboardType.Text,
+                                imeAction = ImeAction.Next
+                            )
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+                    // Linea para introducir la cantidad de elementos
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = "Precio:",
+                            modifier = Modifier.width(80.dp),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        OutlinedTextField(
+                            value = listScreenVM.state.value.newItemPrice,
+                            onValueChange = {
+                                listScreenVM.changePriceValue(it)
+                                listScreenVM.isEnabledAddButton()
+                            },
+                            placeholder = { Text("7,50") },
+                            singleLine = true,
+                            modifier = Modifier.weight(1f),
+                            keyboardOptions = KeyboardOptions.Default.copy(
+                                keyboardType = KeyboardType.Number,
+                                imeAction = ImeAction.Done
+                            )
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Button(
+                            onClick = {
+
+                            },
+                        ) {
+                            Text(
+                                text = "Generar aleatorio",
+                                fontSize = MaterialTheme.typography.bodyLarge.fontSize
+                            )
+                            Spacer(modifier = Modifier.width(16.dp))
+                            Icon(
+                                imageVector = Icons.Default.Add,
+                                contentDescription = "Generar aleatorio"
+                            )
+                        }
+                        Button(
+                            onClick = {
+                                // TODO añadir un nuevo item
+                            },
+                            enabled = listState.value.enableAddButton
+                        ) {
+                            Text(
+                                text = "Añadir",
+                                fontSize = MaterialTheme.typography.bodyLarge.fontSize
+                            )
+                        }
+                    }
+                }
             }
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = PaddingValues(16.dp)
             ) {
-                items(state.value.addedProducts.size) { index ->
+                items(listState.value.addedProducts.size) { index ->
                     ItemLista(
-                        product = state.value.addedProducts[index],
-                        increaseUnit = {},
-                        decreaseUnit = {},
-                        toDetailScreen = toDetailScreen)
+                        product = listState.value.addedProducts[index],
+                        increaseUnit = {productName -> listScreenVM.increaseProduct(productName)},
+                        decreaseUnit = {productName -> listScreenVM.decreaseProduct(productName)},
+                        deleteProduct = {productName -> listScreenVM.deleteProduct(productName)},
+                        toDetailScreen = toDetailScreen,
+                    )
                 }
             }
         }
@@ -115,8 +250,10 @@ fun ItemLista(
     product: Product,
     increaseUnit: (String) -> Unit,
     decreaseUnit: (String) -> Unit,
+    deleteProduct: (String) -> Unit,
     toDetailScreen: () -> Unit,
 ) {
+    val context = LocalContext.current
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -124,12 +261,12 @@ fun ItemLista(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
 
-    ) {
-        Row (
+        ) {
+        Row(
             modifier = Modifier.weight(1f),
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically,
-        ){
+        ) {
             Text(
                 text = product.name
             )
@@ -141,9 +278,9 @@ fun ItemLista(
         ) {
             IconButton(
                 onClick = {
-                    //TODO decrementar
+                    decreaseUnit(product.name)
                 }
-            ){
+            ) {
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowDown,
                     contentDescription = "decrease"
@@ -156,9 +293,9 @@ fun ItemLista(
 
             IconButton(
                 onClick = {
-                    //TODO incrementar
+                    increaseUnit(product.name)
                 }
-            ){
+            ) {
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowUp,
                     contentDescription = "increase"
@@ -168,7 +305,7 @@ fun ItemLista(
                 onClick = {
                     //TODO navegar a detalles del item
                 }
-            ){
+            ) {
                 Icon(
                     imageVector = Icons.Default.Info,
                     contentDescription = "info"
@@ -177,9 +314,10 @@ fun ItemLista(
 
             IconButton(
                 onClick = {
-                    //TODO eliminar item
+                    deleteProduct(product.name)
+                    Toast.makeText(context,"Has eliminado: ${product.name} de la lista", Toast.LENGTH_SHORT).show()
                 }
-            ){
+            ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = "delete"
@@ -199,9 +337,10 @@ fun PreviewListaCompra() {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewItemLista(){
+fun PreviewItemLista() {
     ItemLista(
         product = Product(name = "Nombre", quantity = 10, price = 10.50),
+        {},
         {},
         {},
         {},
