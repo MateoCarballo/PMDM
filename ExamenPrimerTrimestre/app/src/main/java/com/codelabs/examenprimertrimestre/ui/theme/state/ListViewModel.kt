@@ -1,15 +1,34 @@
 package com.codelabs.examenprimertrimestre.ui.theme.state
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.codelabs.examenprimertrimestre.data.Product
+import com.codelabs.examenprimertrimestre.data.ProductRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class ListViewModel : ViewModel() {
+class ListViewModel(
+    savedStateHandle: SavedStateHandle,
+    private val productRepository: ProductRepository
+) : ViewModel() {
     private val _state = MutableStateFlow(ListState())
     val state: StateFlow<ListState> = _state.asStateFlow()
+
+    fun getProductsFromDatabase(){
+        //val productsFromDatabase: Flow<List<Product>> = productRepository.getAllProductsStream()
+        val productsFromDatabase: List<Product> = productRepository.getAllProductsStream()
+        _state.update {
+            it.copy(
+                addedProducts = {
+                    //TODO no entiendo como meter aqui el corrutine scope
+                // para poder traerme de la DB los datos que ya existan de productos
+                }
+            )
+        }
+    }
 
     fun addNewProduct() {
         if (_state.value.newItemName.isNotBlank() && _state.value.newItemName.isNotEmpty() && _state.value.newItemPrice.isNotBlank() && _state.value.newItemPrice.isNotEmpty()) {

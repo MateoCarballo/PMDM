@@ -58,8 +58,10 @@ fun ListaCompra(
 ) {
     val listState = listScreenVM.state.collectAsState()
     LaunchedEffect(Unit) {
+        listScreenVM.getProductsFromDatabase()
         listScreenVM.updateTotalPrice()
         listScreenVM.updateTotalQuantity()
+
     }
     Scaffold(
         topBar = {
