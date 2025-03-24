@@ -1,14 +1,19 @@
 package com.codelabs.examenprimertrimestre.ui.theme.state
 
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.codelabs.examenprimertrimestre.data.Product
 import com.codelabs.examenprimertrimestre.data.ProductRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class ListViewModel(
     savedStateHandle: SavedStateHandle,
@@ -17,19 +22,17 @@ class ListViewModel(
     private val _state = MutableStateFlow(ListState())
     val state: StateFlow<ListState> = _state.asStateFlow()
 
-    fun getProductsFromDatabase(){
-        //val productsFromDatabase: Flow<List<Product>> = productRepository.getAllProductsStream()
-        val productsFromDatabase: List<Product> = productRepository.getAllProductsStream()
+    suspend fun getProductsFromDatabase() {
+        //TODO aqui intento recoger lo primero del flujo para transformarlo en una lista
+        val productsFromDatabase: List<Product> = productRepository.getAllProductsStream().first()
         _state.update {
             it.copy(
-                addedProducts = {
-                    //TODO no entiendo como meter aqui el corrutine scope
-                // para poder traerme de la DB los datos que ya existan de productos
-                }
+                addedProducts = productsFromDatabase
             )
         }
     }
 
+    /* COMO ESTABA CON UNA LISTA GENERADA ALEATORIAMENNTE
     fun addNewProduct() {
         if (_state.value.newItemName.isNotBlank() && _state.value.newItemName.isNotEmpty() && _state.value.newItemPrice.isNotBlank() && _state.value.newItemPrice.isNotEmpty()) {
             val price = _state.value.newItemPrice.toDoubleOrNull()
@@ -43,6 +46,27 @@ class ListViewModel(
                 }
             }
         }
+    }
+     */
+
+    fun addNewProduct() {
+        if (_state.value.newItemName.isNotBlank() && _state.value.newItemName.isNotEmpty() && _state.value.newItemPrice.isNotBlank() && _state.value.newItemPrice.isNotEmpty()) {
+            val price = _state.value.newItemPrice.toDoubleOrNull()
+            if (price != null && price > 0) {
+                val newProduct = Product(name = _state.value.newItemName, price = price)
+                _state.update {
+                    it.copy(
+                        addedProducts = it.addedProducts + newProduct
+                    )
+                }
+                //TODO hacerlo suspend o corrutine ??
+                viewModelScope.launch {
+                    productRepository.insertProduct(newProduct)
+                }
+            }
+        }
+        updateTotalPrice()
+        updateTotalQuantity()
     }
 
     fun increaseProduct(productName: String) {
@@ -91,10 +115,14 @@ class ListViewModel(
 
     fun deleteProduct(productName: String) {
         val updatedList = _state.value.addedProducts.filter { it.name != productName }
+        val product = _state.value.addedProducts.find { it.name ==productName }
         _state.update {
             it.copy(
                 addedProducts = updatedList
             )
+        }
+        viewModelScope.launch {
+            if (product!= null) productRepository.deleteProduct(product)
         }
         updateTotalPrice()
         updateTotalQuantity()

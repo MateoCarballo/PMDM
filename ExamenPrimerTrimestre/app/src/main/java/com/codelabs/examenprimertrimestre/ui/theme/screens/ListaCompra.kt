@@ -48,13 +48,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.codelabs.examenprimertrimestre.data.Product
+import com.codelabs.examenprimertrimestre.ui.theme.AppViewModelProvider
 import com.codelabs.examenprimertrimestre.ui.theme.state.ListViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListaCompra(
     toDetailScreen: () -> Unit,
-    listScreenVM: ListViewModel = viewModel()
+    listScreenVM: ListViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val listState = listScreenVM.state.collectAsState()
     LaunchedEffect(Unit) {
@@ -91,7 +92,7 @@ fun ListaCompra(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                //TODO accion de pulsar boton flotante
+                //TODO accion de pulsar boton flota
                      },
                 containerColor = MaterialTheme.colorScheme.secondary
             ) {
@@ -193,7 +194,7 @@ fun ListaCompra(
                             style = MaterialTheme.typography.bodyMedium
                         )
                         OutlinedTextField(
-                            value = listScreenVM.state.value.newItemPrice,
+                            value = listState.value.newItemPrice,
                             onValueChange = {
                                 listScreenVM.changePriceValue(it)
                                 listScreenVM.isEnabledAddButton()

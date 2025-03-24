@@ -1,7 +1,6 @@
 package com.codelabs.examenprimertrimestre.ui.theme.state
 
 import com.codelabs.examenprimertrimestre.data.Product
-import com.codelabs.examenprimertrimestre.data.getFakeProducts
 
 data class ListState(
     val newItemName: String = "",
@@ -9,5 +8,6 @@ data class ListState(
     val totalPrice: Double = 0.0,
     val totalItems: Int = 0,
     val enableAddButton: Boolean = false,
-    val addedProducts: List<Product> = getFakeProducts(),
+    //TODO Aqui quiero que por defecto traiga los datos de la DB
+    val addedProducts: List<Product> = listOf(),
 )
