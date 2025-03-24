@@ -26,6 +26,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -49,7 +50,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.codelabs.examenprimertrimestre.data.Product
 import com.codelabs.examenprimertrimestre.ui.theme.state.ListViewModel
 
-@SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListaCompra(
@@ -85,6 +85,20 @@ fun ListaCompra(
                     navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
                 )
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                //TODO accion de pulsar boton flotante
+                     },
+                containerColor = MaterialTheme.colorScheme.secondary
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    tint = MaterialTheme.colorScheme.onSecondary,
+                    contentDescription = "Añadir producto"
+                )
+            }
         },
         bottomBar = {
             BottomAppBar(
@@ -135,7 +149,7 @@ fun ListaCompra(
                         .padding(8.dp),
                     verticalArrangement = Arrangement.Center,
 
-                ) {
+                    ) {
                     Text("Añadir nuevo item con precio", fontSize = 20.sp)
                     Spacer(modifier = Modifier.height(16.dp))
                     // Linea para introducir nombre del item
@@ -199,7 +213,7 @@ fun ListaCompra(
                     ) {
                         Button(
                             onClick = {
-
+                                //TODO
                             },
                         ) {
                             Text(
@@ -214,7 +228,7 @@ fun ListaCompra(
                         }
                         Button(
                             onClick = {
-                                // TODO añadir un nuevo item
+                                listScreenVM.addNewProduct()
                             },
                             enabled = listState.value.enableAddButton
                         ) {
@@ -346,4 +360,3 @@ fun PreviewItemLista() {
         {},
     )
 }
-

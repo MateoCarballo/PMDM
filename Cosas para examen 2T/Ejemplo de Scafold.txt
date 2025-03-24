@@ -1,0 +1,78 @@
+Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = "App name", fontSize = 24.sp) //TODO titulo del Scafold
+                },
+                navigationIcon = {
+                    IconButton(
+                        onClick = {
+                            //TODO navegar a la anterior
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                )
+            )
+        },
+        bottomBar = {
+            BottomAppBar(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceAround
+                )
+                {
+
+                //TODO ejemplo del contenido a pie de pantalla
+
+                    Text(
+                        text = "Total",
+                        modifier = Modifier.padding(16.dp),
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                    Text(
+                        text = "Cantidad",
+                        modifier = Modifier.padding(16.dp),
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                    Text(
+                        text = "Precio",
+                        modifier = Modifier.padding(16.dp),
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
+            }
+        }
+    ) { paddingValues ->
+        // TODO Contenido principal con padding respetando el Scaffold
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues), // Respeta TopBar y BottomBar
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+
+        //TODO ejemplo de lazy column sobre una lista
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(16.dp)
+            ) {
+                items(listState.value.addedProducts.size) { index ->
+                    ItemLista(product = listState.value.addedProducts[index],)
+                }
+            }
+        }
+    }

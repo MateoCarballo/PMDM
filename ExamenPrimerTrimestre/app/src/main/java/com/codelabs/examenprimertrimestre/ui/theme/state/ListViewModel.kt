@@ -3,12 +3,13 @@ package com.codelabs.examenprimertrimestre.ui.theme.state
 import androidx.lifecycle.ViewModel
 import com.codelabs.examenprimertrimestre.data.Product
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 class ListViewModel : ViewModel() {
     private val _state = MutableStateFlow(ListState())
-    val state = _state.asStateFlow()
+    val state: StateFlow<ListState> = _state.asStateFlow()
 
     fun addNewProduct() {
         if (_state.value.newItemName.isNotBlank() && _state.value.newItemName.isNotEmpty() && _state.value.newItemPrice.isNotBlank() && _state.value.newItemPrice.isNotEmpty()) {
@@ -23,8 +24,6 @@ class ListViewModel : ViewModel() {
                 }
             }
         }
-        updateTotalPrice()
-        updateTotalQuantity()
     }
 
     fun increaseProduct(productName: String) {
@@ -82,23 +81,23 @@ class ListViewModel : ViewModel() {
         updateTotalQuantity()
     }
 
-    fun changeItemName(newName: String){
-        _state.update{
+    fun changeItemName(newName: String) {
+        _state.update {
             it.copy(
                 newItemName = newName
             )
         }
     }
 
-    fun changePriceValue(newPrice: String){
-        _state.update{
+    fun changePriceValue(newPrice: String) {
+        _state.update {
             it.copy(
                 newItemPrice = newPrice
             )
         }
     }
 
-    fun updateTotalPrice(){
+    fun updateTotalPrice() {
         _state.update {
             it.copy(
                 totalPrice = _state.value.addedProducts.sumOf { it.totalPrice }
@@ -106,7 +105,7 @@ class ListViewModel : ViewModel() {
         }
     }
 
-    fun updateTotalQuantity(){
+    fun updateTotalQuantity() {
         _state.update {
             it.copy(
                 totalItems = _state.value.addedProducts.sumOf { it.quantity }
@@ -114,15 +113,16 @@ class ListViewModel : ViewModel() {
         }
     }
 
-    fun isEnabledAddButton(){
+    fun isEnabledAddButton() {
         if (_state.value.newItemName.isNotEmpty() && _state.value.newItemName.isNotBlank()
-            && _state.value.newItemPrice.isNotEmpty() && _state.value.newItemPrice.isNotBlank()){
+            && _state.value.newItemPrice.isNotEmpty() && _state.value.newItemPrice.isNotBlank()
+        ) {
             _state.update {
                 it.copy(
                     enableAddButton = true
                 )
             }
-        }else{
+        } else {
             _state.update {
                 it.copy(
                     enableAddButton = false

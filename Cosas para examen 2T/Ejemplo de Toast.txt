@@ -1,0 +1,4 @@
+// Ejemplo de Toast
+
+val context = LocalContext.current
+Toast.makeText(context,"Has eliminado: ${product.name} de la lista", Toast.LENGTH_SHORT).show()
