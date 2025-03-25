@@ -10,12 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6ec6250b-d2bc-4fe1-90d9-c2b02ad85143" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/codelabs/examenprimertrimestre/ListaCompraApp.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/codelabs/examenprimertrimestre/ListaCompraApplication.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/codelabs/examenprimertrimestre/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/codelabs/examenprimertrimestre/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/codelabs/examenprimertrimestre/ui/theme/navigation/AppNavigation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/codelabs/examenprimertrimestre/ui/theme/navigation/AppNavigation.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/codelabs/examenprimertrimestre/ui/theme/screens/ListaCompra.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/codelabs/examenprimertrimestre/ui/theme/screens/ListaCompra.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/codelabs/examenprimertrimestre/ui/theme/state/ListViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/codelabs/examenprimertrimestre/ui/theme/state/ListViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/ExamenPrimerTrimestre.app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/ExamenPrimerTrimestre.app.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +58,7 @@
     "RunOnceActivity.readMode.enableVisualFormatting": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "main"
+    "git-widget-placeholder": "trivia__api__connection"
   }
 }]]></component>
   <component name="RecentsManager">

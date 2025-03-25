@@ -9,4 +9,8 @@
       <option value="C:\Users\Mateo\AppData\Local\Temp\overlay4071926870465467436" />
     </paths>
   </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
 </module>

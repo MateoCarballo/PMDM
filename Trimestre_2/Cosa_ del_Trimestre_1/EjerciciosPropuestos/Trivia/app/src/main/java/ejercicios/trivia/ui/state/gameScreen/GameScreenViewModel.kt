@@ -15,77 +15,99 @@ TODO Dani retrofit
 Aqui entiendo que tengo que meterle el question repository.
  Pero no necesitaria pasarle solo las preguntas desde la primera pantalla como parametro?
  */
-class GameScreenViewModel(questionRepository: QuestionRepository) : ViewModel() {
 
-    private val _state = MutableStateFlow(GameScreenState(
-        questionsFromApi = TODO(),
-        question = TODO(),
-        rounds = TODO(),
-        selectedAnswer = TODO(),
-        correctAnswers = TODO(),
-        answeredQuestion = TODO(),
-        usedQuestions = TODO(),
-        gameOver = TODO()
-    ))
+class GameScreenViewModel(private val questionRepository: QuestionRepository) : ViewModel() {
+
+    // Este es el estado del ViewModel
+    private val _state = MutableStateFlow(
+        GameScreenState(
+            indexOfQuestion = 0,  // Inicializamos con 0, indicando la primera pregunta
+            questionsFromApi = emptyList(),  // Lista vacía al principio
+            question = null,  // Pregunta inicializada a null
+            rounds = 5,  // Número de rondas
+            selectedAnswer = -1,  // Sin respuesta seleccionada
+            correctAnswers = 0,  // Correctas inicializadas a 0
+            answeredQuestion = false,  // Ninguna pregunta ha sido respondida
+            numberOfQuestionAnswered = 0,  // Ninguna pregunta respondida
+            gameOver = false  // El juego no ha terminado
+        )
+    )
+
     val state: StateFlow<GameScreenState> = _state.asStateFlow()
 
-    fun getAllQuestions() {
+    // Este método obtiene las preguntas de la API
+    fun getAllQuestions(numberOfQuestions: Int) {
         viewModelScope.launch {
             try {
-                // Llamada al repositorio
-                val apiQuestions = questionRepository.getQuestions(10)
+                // Llamada al repositorio para obtener las preguntas
+                val apiQuestions = questionRepository.getQuestions(numberOfQuestions)
 
-                // Convertimos las preguntas de la API a nuestro modelo interno
+                // Convertimos las preguntas de la API al formato interno
                 val convertedQuestions = apiQuestions.map { it.toQuestion() }
 
                 // Actualizamos el estado con las preguntas obtenidas
-                _state.update { currentState ->
-                    currentState.copy(
+                _state.update {
+                    it.copy(
                         questionsFromApi = convertedQuestions,
-                        question = convertedQuestions.first(),
-                        usedQuestions = listOf(0)
+                        question = convertedQuestions.firstOrNull()  // Selecciona la primera pregunta si existe
                     )
                 }
             } catch (e: Exception) {
-                // Manejo básico de errores
+                // Manejo de errores
                 println("Error al obtener preguntas: ${e.message}")
             }
         }
     }
-    
-    fun updateQuesion() {
-        //TODO conseguir una pregunta de la API. Antes aquí preguntaba a mi clase con preguntas Questions
 
+    // Método para actualizar la pregunta actual
+    fun updateQuestion() {
+        // Verifica si hay más preguntas para mostrar
+        if (_state.value.indexOfQuestion < _state.value.questionsFromApi.size - 1) {
+            val newQuestionIndex = _state.value.indexOfQuestion + 1
+            _state.update {
+                it.copy(
+                    indexOfQuestion = newQuestionIndex,
+                    question = it.questionsFromApi[newQuestionIndex]
+                )
+            }
+        }
     }
 
-    fun addCorrectAnswer(){
-        _state.value = _state.value.copy(correctAnswers = _state.value.correctAnswers + 1)
-    }
-
-    fun changeAnsweredQuestionValue(){
-        _state.value = _state.value.copy(answeredQuestion = !_state.value.answeredQuestion)
-    }
-
-    fun selectOption(newIndexSelected: Int) {
-        //_state.value = _state.value.copy(selectedAnswer = index)
+    // Método para añadir una respuesta correcta
+    fun addCorrectAnswer() {
         _state.update {
-            currentState ->
-            currentState.copy(
-                selectedAnswer = newIndexSelected,
+            it.copy(correctAnswers = it.correctAnswers + 1)
+        }
+    }
+
+    // Método para cambiar si una pregunta fue respondida
+    fun changeAnsweredQuestionValue() {
+        _state.update {
+            it.copy(answeredQuestion = !it.answeredQuestion)
+        }
+    }
+
+    // Método para seleccionar una opción de respuesta
+    fun selectOption(newIndexSelected: Int) {
+        _state.update {
+            it.copy(
+                selectedAnswer = newIndexSelected
             )
         }
     }
 
-    fun amICorrect(numerOption: Int) : Boolean{
-        return numerOption == _state.value.question.correctAnswerIndex
+    // Método para verificar si la respuesta seleccionada es correcta
+    fun amICorrect(selectedOptionIndex: Int): Boolean {
+        return selectedOptionIndex == _state.value.question?.correctAnswerIndex
     }
 
-    fun setNumberOfQuestions(roundsNumber: Int){
+    // Método para configurar el número de rondas
+    fun setNumberOfQuestions(roundsNumber: Int) {
         _state.update {
-            curretState ->
-            curretState.copy(
+            it.copy(
                 rounds = roundsNumber
             )
         }
     }
 }
+

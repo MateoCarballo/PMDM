@@ -2,12 +2,13 @@ package ejercicios.trivia.ui.state.homeScreen
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import ejercicios.trivia.data.QuestionRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class HomeScreenViewModel : ViewModel() {
+class HomeScreenViewModel(questionRepository: QuestionRepository) : ViewModel() {
 
     private val TAG = "HS_VM"
 

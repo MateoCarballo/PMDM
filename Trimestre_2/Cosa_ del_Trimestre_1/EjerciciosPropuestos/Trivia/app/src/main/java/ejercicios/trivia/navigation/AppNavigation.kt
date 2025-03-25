@@ -17,7 +17,6 @@ import ejercicios.trivia.ui.screens.SplashScreen
 fun AppNavigation(
     navController: NavHostController,
 ) {
-
     NavHost(
         navController = navController,
         startDestination = AppScreens.SplashScreen.route,
@@ -40,12 +39,10 @@ fun AppNavigation(
                 navArgument("numberOfQuestions") { type = NavType.StringType }
             ),
         ) {
-            val numberOfQuestions = it.arguments?.getString("numberOfQuestions") ?: "5"
             GameScreen(
                 toResultScreen = {
                                  corrects, totalQuestionsNumber ->
                     navController.navigate(AppScreens.ResultScreen.route + "/$corrects" + "/$totalQuestionsNumber") },
-                totalQuestions = numberOfQuestions,
 
             )
 
