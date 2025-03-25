@@ -1,14 +1,10 @@
 package com.codelabs.examenprimertrimestre.ui.theme.state
 
-import android.widget.Toast
-import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.codelabs.examenprimertrimestre.data.Product
 import com.codelabs.examenprimertrimestre.data.ProductRepository
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -83,11 +79,14 @@ class ListViewModel(
             val updatedList = _state.value.addedProducts.toMutableList().apply {
                 this[productIndex] = updatedProduct
             }
-
             _state.update {
                 it.copy(
                     addedProducts = updatedList
                 )
+            }
+            // Buscamos el producto en la DB que sea igual al que estamos aucmento la cantidad
+            viewModelScope.launch {
+                productRepository.updateProduct(_state.value.addedProducts[productIndex])
             }
         }
         updateTotalPrice()
@@ -110,6 +109,10 @@ class ListViewModel(
                 it.copy(
                     addedProducts = updatedList
                 )
+            }
+            // Buscamos el producto en la DB que sea igual al que estamos aucmento la cantidad
+            viewModelScope.launch {
+                productRepository.updateProduct(_state.value.addedProducts[productIndex])
             }
         }
         updateTotalPrice()

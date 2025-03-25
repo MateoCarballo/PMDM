@@ -54,7 +54,8 @@ import com.codelabs.examenprimertrimestre.ui.theme.state.ListViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListaCompra(
-    toDetailScreen: () -> Unit,
+    navigateBack: () -> Unit,
+    toDetailScreen: (String,String,String) -> Unit,
     listScreenVM: ListViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val listState = listScreenVM.state.collectAsState()
@@ -73,7 +74,7 @@ fun ListaCompra(
                 navigationIcon = {
                     IconButton(
                         onClick = {
-                            //TODO navegar a la anterior
+                            navigateBack()
                         }
                     ) {
                         Icon(
@@ -254,7 +255,7 @@ fun ListaCompra(
                         increaseUnit = {productName -> listScreenVM.increaseProduct(productName)},
                         decreaseUnit = {productName -> listScreenVM.decreaseProduct(productName)},
                         deleteProduct = {productName -> listScreenVM.deleteProduct(productName)},
-                        toDetailScreen = toDetailScreen,
+                        toDetailScreen = {name,price,quantity->toDetailScreen(name,price,quantity)},
                     )
                 }
             }
@@ -268,7 +269,7 @@ fun ItemLista(
     increaseUnit: (String) -> Unit,
     decreaseUnit: (String) -> Unit,
     deleteProduct: (String) -> Unit,
-    toDetailScreen: () -> Unit,
+    toDetailScreen: (String,String,String) -> Unit,
 ) {
     val context = LocalContext.current
     Row(
@@ -320,7 +321,7 @@ fun ItemLista(
             }
             IconButton(
                 onClick = {
-                    //TODO navegar a detalles del item
+                    toDetailScreen(product.name,product.price.toString(),product.quantity.toString())
                 }
             ) {
                 Icon(
@@ -346,11 +347,7 @@ fun ItemLista(
 }
 
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PreviewListaCompra() {
-    ListaCompra({})
-}
+
 
 @Preview(showBackground = true)
 @Composable
@@ -360,6 +357,12 @@ fun PreviewItemLista() {
         {},
         {},
         {},
-        {},
+        {} as (String, String, String) -> Unit,
     )
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun PreviewListaCompra() {
+    ListaCompra({}, {} as (String, String, String) -> Unit)
 }
