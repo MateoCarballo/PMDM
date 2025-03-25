@@ -88,6 +88,9 @@ fun Detalle(
                     ElementoDetalle("Nombre",productName)
                     ElementoDetalle("Precio",productPrice)
                     ElementoDetalle("Cantidad",productQuantity)
+                    ElementoDetalle("Precio total elementos",
+                        (productQuantity.toInt() * productPrice.toDouble()).toString()
+                    )
                 }
             }
         }
