@@ -1,5 +1,6 @@
 package com.codelabs.examenprimertrimestre.ui.theme.screens
 
+import android.app.Dialog
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -58,7 +59,7 @@ import com.codelabs.examenprimertrimestre.ui.theme.state.ListViewModel
 @Composable
 fun ListaCompra(
     navigateBack: () -> Unit,
-    toDetailScreen: (String,String,String) -> Unit,
+    toDetailScreen: (String, String, String) -> Unit,
     listScreenVM: ListViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val listState = listScreenVM.state.collectAsState()
@@ -95,8 +96,8 @@ fun ListaCompra(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                //TODO accion de pulsar boton flota
-                     },
+                    //TODO accion de pulsar boton flota
+                },
                 containerColor = MaterialTheme.colorScheme.secondary
             ) {
                 Icon(
@@ -131,7 +132,7 @@ fun ListaCompra(
                         color = MaterialTheme.colorScheme.onPrimary
                     )
                     Text(
-                        text = "Precio " + (listState.value.totalPrice*100).toInt()/100.0,
+                        text = "Precio " + (listState.value.totalPrice * 100).toInt() / 100.0,
                         modifier = Modifier.padding(16.dp),
                         color = MaterialTheme.colorScheme.onPrimary
                     )
@@ -155,7 +156,8 @@ fun ListaCompra(
                 elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
             ) {
                 Column(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxSize()
                         .padding(8.dp),
                     verticalArrangement = Arrangement.Center,
 
@@ -168,18 +170,13 @@ fun ListaCompra(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(
-                            text = "Nombre:",
-                            modifier = Modifier.width(80.dp),
-                            style = MaterialTheme.typography.bodyMedium
-                        )
                         OutlinedTextField(
                             value = listState.value.newItemName,
                             onValueChange = {
                                 listScreenVM.changeItemName(it)
                                 listScreenVM.isEnabledAddButton()
                             },
-                            placeholder = { Text("Patatas") },
+                            label = { Text("Nombre") },
                             singleLine = true,
                             modifier = Modifier.weight(1f),
                             keyboardOptions = KeyboardOptions.Default.copy(
@@ -195,18 +192,13 @@ fun ListaCompra(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(
-                            text = "Precio:",
-                            modifier = Modifier.width(80.dp),
-                            style = MaterialTheme.typography.bodyMedium
-                        )
                         OutlinedTextField(
                             value = listState.value.newItemPrice,
                             onValueChange = {
                                 listScreenVM.changePriceValue(it)
                                 listScreenVM.isEnabledAddButton()
                             },
-                            placeholder = { Text("7,50") },
+                            label = { Text("Precio") },
                             singleLine = true,
                             modifier = Modifier.weight(1f),
                             keyboardOptions = KeyboardOptions.Default.copy(
@@ -258,10 +250,19 @@ fun ListaCompra(
                 items(listState.value.addedProducts.size) { index ->
                     ItemLista(
                         product = listState.value.addedProducts[index],
-                        increaseUnit = {productName -> listScreenVM.increaseProduct(productName)},
-                        decreaseUnit = {productName -> listScreenVM.decreaseProduct(productName)},
-                        deleteProduct = {productName -> listScreenVM.deleteProduct(productName)},
-                        toDetailScreen = {name,price,quantity->toDetailScreen(name,price,quantity)},
+                        increaseUnit = { productName -> listScreenVM.increaseProduct(productName) },
+                        decreaseUnit = { productName -> listScreenVM.decreaseProduct(productName) },
+                        deleteProduct = { productName -> listScreenVM.deleteProduct(productName) },
+                        toDetailScreen = { name, price, quantity ->
+                            toDetailScreen(
+                                name,
+                                price,
+                                quantity
+                            )
+                        },
+                        isDialogTrue = listState.value.openDialog,
+                        showDialog = { listScreenVM.showDialog() },
+                        hideDialog = { listScreenVM.hideDialog() },
                     )
                 }
             }
@@ -271,13 +272,15 @@ fun ListaCompra(
 
 @Composable
 fun ItemLista(
+    isDialogTrue: Boolean,
+    showDialog: () -> Unit,
+    hideDialog: () -> Unit,
     product: Product,
     increaseUnit: (String) -> Unit,
     decreaseUnit: (String) -> Unit,
     deleteProduct: (String) -> Unit,
-    toDetailScreen: (String,String,String) -> Unit,
+    toDetailScreen: (String, String, String) -> Unit,
 ) {
-    val context = LocalContext.current
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -327,7 +330,11 @@ fun ItemLista(
             }
             IconButton(
                 onClick = {
-                    toDetailScreen(product.name,product.price.toString(),product.quantity.toString())
+                    toDetailScreen(
+                        product.name,
+                        product.price.toString(),
+                        product.quantity.toString()
+                    )
                 }
             ) {
                 Icon(
@@ -338,8 +345,8 @@ fun ItemLista(
 
             IconButton(
                 onClick = {
-                    deleteProduct(product.name)
-                    Toast.makeText(context,"Has eliminado: ${product.name} de la lista", Toast.LENGTH_SHORT).show()
+                    //deleteProduct(product.name)
+                    showDialog() //Accion de poner a true mostrar dialogo
                 }
             ) {
                 Icon(
@@ -350,7 +357,58 @@ fun ItemLista(
         }
 
     }
+    if (isDialogTrue) {
+        ShowAlertDialog(
+            itemName = product.name,
+            deleteItem = { deleteProduct(it) },
+            hideDialog = { hideDialog() }
+        )
+    }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ShowAlertDialog(
+    itemName: String,
+    hideDialog: () -> Unit,
+    deleteItem: (String) -> Unit,
+) {
+    val context = LocalContext.current
+    AlertDialog(
+        onDismissRequest = {
+            hideDialog()
+        },
+        title = { Text("Confirmación") },
+        text = { Text("¿Está seguro de eliminar este producto?") },
+        confirmButton = {
+            Button(
+                onClick = {
+                    deleteItem(itemName)// Accion de eliminar el producto cuyo
+                    hideDialog()
+                    Toast.makeText(
+                        context,
+                        "Has eliminado: $itemName de la lista",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    // nombre coincida con la string que le llega(nombre del producto)
+                }
+            ) {
+                Text("Sí")
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = {
+                    hideDialog()
+                }
+            ) {
+                Text("No")
+            }
+        }
+    )
+
+}
+
 
 @Preview(showBackground = true)
 @Composable
@@ -360,7 +418,10 @@ fun PreviewItemLista() {
         increaseUnit = {},
         decreaseUnit = {},
         deleteProduct = {},
-        toDetailScreen = {a,b,c -> previewFunction(a,b,c)}
+        toDetailScreen = { a, b, c -> previewFunction(a, b, c) },
+        hideDialog = { TODO() },
+        isDialogTrue = TODO(),
+        showDialog = TODO()
     )
 }
 

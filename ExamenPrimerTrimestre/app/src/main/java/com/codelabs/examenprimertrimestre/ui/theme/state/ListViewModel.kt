@@ -56,6 +56,8 @@ class ListViewModel(
                     val newProduct = Product(name = _state.value.newItemName, price = price)
                     _state.update {
                         it.copy(
+                            newItemName = "",
+                            newItemPrice = "",
                             addedProducts = it.addedProducts + newProduct
                         )
                     }
@@ -144,6 +146,20 @@ class ListViewModel(
             it.copy(
                 newItemPrice = newPrice
             )
+        }
+    }
+
+    // Método para mostrar el diálogo
+    fun showDialog() {
+        _state.update {
+            it.copy(openDialog = true)
+        }
+    }
+
+    // Método para ocultar el diálogo
+    fun hideDialog() {
+        _state.update {
+            it.copy(openDialog = false)
         }
     }
 

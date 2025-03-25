@@ -10,4 +10,5 @@ data class ListState(
     val enableAddButton: Boolean = false,
     //TODO Aqui quiero que por defecto traiga los datos de la DB
     val addedProducts: List<Product> = listOf(),
+    val openDialog: Boolean = false,
 )

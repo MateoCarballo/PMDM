@@ -1,5 +1,6 @@
 package com.codelabs.examenprimertrimestre.ui.theme.screens
 
+import android.sax.Element
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,8 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -71,30 +74,50 @@ fun Detalle(
                 .fillMaxSize()
                 .padding(paddingValues), // Respeta TopBar y BottomBar
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Top
         ) {
-            Text(
-                text = "Nombre del producto:  $productName" ,
-                fontSize = 20.sp, // Ajusta el tamaño de la fuente
-                fontWeight = FontWeight.Bold, // Pone el texto en negrita
-                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold) // Si prefieres mantener el estilo base de bodyLarge pero con negrita
-            )
-
-            Text(
-                text = "Precio unitario: $productPrice",
-                fontSize = 20.sp, // Ajusta el tamaño de la fuente
-                fontWeight = FontWeight.Bold, // Pone el texto en negrita
-                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold) // Si prefieres mantener el estilo base de bodyLarge pero con negrita
-            )
-
-            Text(
-                text = "Cantidad seleccionada : $productQuantity",
-                fontSize = 20.sp, // Ajusta el tamaño de la fuente
-                fontWeight = FontWeight.Bold, // Pone el texto en negrita
-                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold) // Si prefieres mantener el estilo base de bodyLarge pero con negrita
-            )
-
+            Card (
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+            ){
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                ){
+                    ElementoDetalle("Nombre",productName)
+                    ElementoDetalle("Precio",productPrice)
+                    ElementoDetalle("Cantidad",productQuantity)
+                }
+            }
         }
+    }
+}
+
+@Composable
+fun ElementoDetalle(
+    campoPersonalizado:String,
+    valorPersonalizado:String,
+){
+    Row (
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),  // Un poco de espacio vertical entre los elementos
+        horizontalArrangement = Arrangement.SpaceBetween,  // Distribuye los elementos en los extremos
+        verticalAlignment = Alignment.CenterVertically,
+    ){
+        Text(
+            text = campoPersonalizado ,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+        )
+        Text(
+            text = valorPersonalizado,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+        )
     }
 }
 
