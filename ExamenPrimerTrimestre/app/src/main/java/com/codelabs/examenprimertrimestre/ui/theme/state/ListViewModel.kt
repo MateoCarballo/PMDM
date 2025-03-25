@@ -1,5 +1,6 @@
 package com.codelabs.examenprimertrimestre.ui.theme.state
 
+import android.widget.Toast
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -51,17 +52,19 @@ class ListViewModel(
 
     fun addNewProduct() {
         if (_state.value.newItemName.isNotBlank() && _state.value.newItemName.isNotEmpty() && _state.value.newItemPrice.isNotBlank() && _state.value.newItemPrice.isNotEmpty()) {
-            val price = _state.value.newItemPrice.toDoubleOrNull()
-            if (price != null && price > 0) {
-                val newProduct = Product(name = _state.value.newItemName, price = price)
-                _state.update {
-                    it.copy(
-                        addedProducts = it.addedProducts + newProduct
-                    )
-                }
-                //TODO hacerlo suspend o corrutine ??
-                viewModelScope.launch {
-                    productRepository.insertProduct(newProduct)
+            val isRepeated = _state.value.addedProducts.any { it.name == _state.value.newItemName }
+            if (!isRepeated) {
+                val price = _state.value.newItemPrice.toDoubleOrNull()
+                if (price != null && price > 0) {
+                    val newProduct = Product(name = _state.value.newItemName, price = price)
+                    _state.update {
+                        it.copy(
+                            addedProducts = it.addedProducts + newProduct
+                        )
+                    }
+                    viewModelScope.launch {
+                        productRepository.insertProduct(newProduct)
+                    }
                 }
             }
         }
@@ -115,14 +118,14 @@ class ListViewModel(
 
     fun deleteProduct(productName: String) {
         val updatedList = _state.value.addedProducts.filter { it.name != productName }
-        val product = _state.value.addedProducts.find { it.name ==productName }
+        val product = _state.value.addedProducts.find { it.name == productName }
         _state.update {
             it.copy(
                 addedProducts = updatedList
             )
         }
         viewModelScope.launch {
-            if (product!= null) productRepository.deleteProduct(product)
+            if (product != null) productRepository.deleteProduct(product)
         }
         updateTotalPrice()
         updateTotalQuantity()

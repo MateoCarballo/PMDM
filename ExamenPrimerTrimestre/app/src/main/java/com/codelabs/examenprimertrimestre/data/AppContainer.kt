@@ -7,7 +7,7 @@ class AppContainer(context: Context) {
     private val productDao = appDatabase.productDao()
     val productRepository = ProductRepositoryImpl(productDao)
 
-    fun provideProductRepository(): ProductRepository{
+    fun provideProductRepository(): ProductRepository {
         return productRepository
     }
 }
