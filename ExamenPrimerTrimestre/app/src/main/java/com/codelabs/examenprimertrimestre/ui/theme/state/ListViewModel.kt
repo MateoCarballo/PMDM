@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ListViewModel(
+    //TODO porque necesitaria esto, que aparece en el video pero en mi caso me guarda datos sin usarlo para nada?
     savedStateHandle: SavedStateHandle,
     private val productRepository: ProductRepository
 ) : ViewModel() {
@@ -64,8 +65,7 @@ class ListViewModel(
                 }
             }
         }
-        updateTotalPrice()
-        updateTotalQuantity()
+        updateTotalTotals()
     }
 
     fun increaseProduct(productName: String) {
@@ -89,8 +89,7 @@ class ListViewModel(
                 productRepository.updateProduct(_state.value.addedProducts[productIndex])
             }
         }
-        updateTotalPrice()
-        updateTotalQuantity()
+        updateTotalTotals()
     }
 
     fun decreaseProduct(productName: String) {
@@ -115,8 +114,7 @@ class ListViewModel(
                 productRepository.updateProduct(_state.value.addedProducts[productIndex])
             }
         }
-        updateTotalPrice()
-        updateTotalQuantity()
+        updateTotalTotals()
     }
 
     fun deleteProduct(productName: String) {
@@ -130,8 +128,7 @@ class ListViewModel(
         viewModelScope.launch {
             if (product != null) productRepository.deleteProduct(product)
         }
-        updateTotalPrice()
-        updateTotalQuantity()
+        updateTotalTotals()
     }
 
     fun changeItemName(newName: String) {
@@ -150,17 +147,10 @@ class ListViewModel(
         }
     }
 
-    fun updateTotalPrice() {
+    fun updateTotalTotals() {
         _state.update {
             it.copy(
-                totalPrice = _state.value.addedProducts.sumOf { it.totalPrice }
-            )
-        }
-    }
-
-    fun updateTotalQuantity() {
-        _state.update {
-            it.copy(
+                totalPrice = _state.value.addedProducts.sumOf { it.totalPrice },
                 totalItems = _state.value.addedProducts.sumOf { it.quantity }
             )
         }

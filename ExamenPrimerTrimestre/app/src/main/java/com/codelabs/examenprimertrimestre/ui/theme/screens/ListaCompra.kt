@@ -1,6 +1,6 @@
 package com.codelabs.examenprimertrimestre.ui.theme.screens
 
-import android.annotation.SuppressLint
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -38,6 +39,8 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -61,8 +64,7 @@ fun ListaCompra(
     val listState = listScreenVM.state.collectAsState()
     LaunchedEffect(Unit) {
         listScreenVM.getProductsFromDatabase()
-        listScreenVM.updateTotalPrice()
-        listScreenVM.updateTotalQuantity()
+        listScreenVM.updateTotalTotals()
 
     }
     Scaffold(
@@ -114,6 +116,10 @@ fun ListaCompra(
                     horizontalArrangement = Arrangement.SpaceAround
                 )
                 {
+                    val numero = 3.14159
+                    val redondeado = String.format("%.2f", numero).toDouble()
+
+                    println(redondeado)
                     Text(
                         text = "Total",
                         modifier = Modifier.padding(16.dp),
@@ -125,7 +131,7 @@ fun ListaCompra(
                         color = MaterialTheme.colorScheme.onPrimary
                     )
                     Text(
-                        text = "Precio " + listState.value.totalPrice,
+                        text = "Precio " + (listState.value.totalPrice*100).toInt()/100.0,
                         modifier = Modifier.padding(16.dp),
                         color = MaterialTheme.colorScheme.onPrimary
                     )
@@ -346,20 +352,20 @@ fun ItemLista(
     }
 }
 
-
-
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewItemLista() {
     ItemLista(
         product = Product(name = "Nombre", quantity = 10, price = 10.50),
-        {},
-        {},
-        {},
-        {} as (String, String, String) -> Unit,
+        increaseUnit = {},
+        decreaseUnit = {},
+        deleteProduct = {},
+        toDetailScreen = {a,b,c -> previewFunction(a,b,c)}
     )
 }
+
+fun previewFunction(string: String, string1: String, string2: String) {}
+
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
