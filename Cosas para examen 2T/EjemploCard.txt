@@ -1,0 +1,53 @@
+Card(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
+                .height(250.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        ) {
+            OutlinedTextField(
+                value = listState.value.titulo,
+                onValueChange = {
+                    listadoViewModel.changeItemName(it)
+                },
+                label = { Text("Videojuego") },
+                singleLine = true,
+                modifier = Modifier.weight(1f),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                )
+            )
+            OutlinedTextField(
+                value = listState.value.titulo,
+                onValueChange = {
+                    listadoViewModel.changeItemName(it)
+                },
+                label = { Text("Videojuego") },
+                singleLine = true,
+                modifier = Modifier.weight(1f),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                )
+            )
+            Button(
+                onClick = { /* acción a realizar */ },
+                modifier = Modifier.padding(16.dp) // Agrega un poco de espacio alrededor
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically // Alinea verticalmente el texto e icono
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Añadir",
+                        modifier = Modifier.padding(end = 8.dp), // Espacio entre el ícono y el texto
+                        tint = Color.White // Cambia el color del icono si es necesario
+                    )
+                    Text(
+                        text = "Añadir",
+                        color = Color.White, // Cambia el color del texto si es necesario
+                    )
+                }
+            }
+        }
