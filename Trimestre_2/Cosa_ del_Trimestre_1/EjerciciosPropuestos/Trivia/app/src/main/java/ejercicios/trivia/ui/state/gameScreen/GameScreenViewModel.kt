@@ -1,5 +1,6 @@
 package ejercicios.trivia.ui.state.gameScreen
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ejercicios.trivia.data.QuestionRepository
@@ -20,43 +21,40 @@ class GameScreenViewModel(private val questionRepository: QuestionRepository) : 
 
     // Este es el estado del ViewModel
     private val _state = MutableStateFlow(
-        GameScreenState(
-            indexOfQuestion = 0,  // Inicializamos con 0, indicando la primera pregunta
-            questionsFromApi = emptyList(),  // Lista vacía al principio
-            question = null,  // Pregunta inicializada a null
-            rounds = 5,  // Número de rondas
-            selectedAnswer = -1,  // Sin respuesta seleccionada
-            correctAnswers = 0,  // Correctas inicializadas a 0
-            answeredQuestion = false,  // Ninguna pregunta ha sido respondida
-            numberOfQuestionAnswered = 0,  // Ninguna pregunta respondida
-            gameOver = false  // El juego no ha terminado
-        )
+        GameScreenState()
     )
 
     val state: StateFlow<GameScreenState> = _state.asStateFlow()
 
-    // Este método obtiene las preguntas de la API
+    init {
+        getAllQuestions()
+    }
+    // Este obtiene las preguntas de la API
     fun getAllQuestions(numberOfQuestions: Int) {
         viewModelScope.launch {
             try {
+                Log.d("MiTag", "Entrando al método miMetodo()")
                 // Llamada al repositorio para obtener las preguntas
                 val apiQuestions = questionRepository.getQuestions(numberOfQuestions)
-
-                // Convertimos las preguntas de la API al formato interno
-                val convertedQuestions = apiQuestions.map { it.toQuestion() }
-
-                // Actualizamos el estado con las preguntas obtenidas
+                Log.d("MiTag", "Despues de la llamada al repo para obtener preguntas")                // Convertimos las preguntas de la API al formato interno
+                //val convertedQuestions = apiQuestions.forEach() { it.toQuestion() }
+                +val convertedQuestions = apiQuestions.forEach() { it.toQuestion() }
+                Log.d("MiTag", "Despues de transformar el formato al de mis Question")
                 _state.update {
                     it.copy(
                         questionsFromApi = convertedQuestions,
-                        question = convertedQuestions.firstOrNull()  // Selecciona la primera pregunta si existe
+                        question = convertedQuestions.getOrNull(0)  // Selecciona la primera pregunta si existe
                     )
                 }
+                Log.d("MiTag", "Saliendo al método miMetodo()")
             } catch (e: Exception) {
                 // Manejo de errores
                 println("Error al obtener preguntas: ${e.message}")
             }
+
         }
+        // Actualizamos el estado con las preguntas obtenidas
+
     }
 
     // Método para actualizar la pregunta actual

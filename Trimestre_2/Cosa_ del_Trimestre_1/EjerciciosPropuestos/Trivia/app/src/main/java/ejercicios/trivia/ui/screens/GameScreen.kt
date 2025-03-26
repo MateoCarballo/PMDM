@@ -40,6 +40,7 @@ fun GameScreen(
     LaunchedEffect(Unit) {
         gameScreenVM.getAllQuestions(10)
     }
+
     if (state.value.questionsFromApi.isEmpty()){
         LoadingScreen()
     }else{
@@ -55,15 +56,20 @@ fun GameScreen(
                 fontSize = MaterialTheme.typography.headlineSmall.fontSize,
             )
             Spacer(modifier = Modifier.height(16.dp))
-            Question(
-                question = state.value.question,
-                selectedNumerIndex = state.value.selectedAnswer,
-                isAnswered = state.value.answeredQuestion,
-                amICorrect = { numberOption -> gameScreenVM.amICorrect(numberOption) },
-                // TODO Dani porque asi no se ejecuta correctamente ?
-                selectOption = gameScreenVM::selectOption
-                //selectOption = { index -> trivialVM.selectOption(index) }
-            )
+            if (state.value.question != null){
+                Question(
+                    question = state.value.question,
+                    selectedNumerIndex = state.value.selectedAnswer,
+                    isAnswered = state.value.answeredQuestion,
+                    amICorrect = { numberOption -> gameScreenVM.amICorrect(numberOption) },
+                    // TODO Dani porque asi no se ejecuta correctamente ?
+                    selectOption = gameScreenVM::selectOption
+                    //selectOption = { index -> trivialVM.selectOption(index) }
+                )
+            }else{
+                Text("Error al cargar la pregunta")
+            }
+
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -153,8 +159,9 @@ fun Question(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            question?.options?.let { options ->
-                for ((index, option) in question.options.withIndex()) {
+            question?.options?.let {
+                for ((index, option) in question.options.withIndex())
+                {
                     Option(
                         numberOption = index,
                         optionText = option,
