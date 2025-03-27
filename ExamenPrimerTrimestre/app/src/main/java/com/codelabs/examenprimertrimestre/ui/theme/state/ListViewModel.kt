@@ -150,16 +150,29 @@ class ListViewModel(
     }
 
     // Método para mostrar el diálogo
-    fun showDialog() {
+    fun showDialogDelete() {
         _state.update {
-            it.copy(openDialog = true)
+            it.copy(openDialogDelete = true)
         }
     }
 
     // Método para ocultar el diálogo
-    fun hideDialog() {
+    fun hideDialogDelete() {
         _state.update {
-            it.copy(openDialog = false)
+            it.copy(openDialogDelete = false)
+        }
+    }
+
+    fun showDialogInsert() {
+        _state.update {
+            it.copy(openDialogInsert = true)
+        }
+    }
+
+    // Método para ocultar el diálogo
+    fun hideDialogInsert() {
+        _state.update {
+            it.copy(openDialogInsert = false)
         }
     }
 

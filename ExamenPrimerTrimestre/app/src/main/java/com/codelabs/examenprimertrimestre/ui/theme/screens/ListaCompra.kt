@@ -1,7 +1,5 @@
 package com.codelabs.examenprimertrimestre.ui.theme.screens
 
-import android.app.Dialog
-import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -40,8 +38,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -54,6 +50,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.codelabs.examenprimertrimestre.data.Product
 import com.codelabs.examenprimertrimestre.ui.theme.AppViewModelProvider
 import com.codelabs.examenprimertrimestre.ui.theme.state.ListViewModel
+import kotlinx.coroutines.flow.update
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -96,7 +93,7 @@ fun ListaCompra(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    //TODO accion de pulsar boton flota
+                    listScreenVM.showDialogInsert()
                 },
                 containerColor = MaterialTheme.colorScheme.secondary
             ) {
@@ -260,14 +257,80 @@ fun ListaCompra(
                                 quantity
                             )
                         },
-                        isDialogTrue = listState.value.openDialog,
-                        showDialog = { listScreenVM.showDialog() },
-                        hideDialog = { listScreenVM.hideDialog() },
+                        isDialogTrue = listState.value.openDialogDelete,
+                        showDialog = { listScreenVM.showDialogDelete() },
+                        hideDialog = { listScreenVM.hideDialogDelete() },
                     )
                 }
             }
         }
+
+        if (listState.value.openDialogInsert) {
+            AddProductDialog(
+                productName = listState.value.newItemName,
+                productPrice = listState.value.newItemPrice,
+                changeNameValue = { name -> listScreenVM.changeItemName(name) },
+                changePriceValue = { price -> listScreenVM.changePriceValue(price) },
+                onDismiss = {listScreenVM.hideDialogDelete()},
+                onAddProduct = { }
+            )
+        }
     }
+}
+
+@Composable
+fun AddProductDialog(
+    productName:String,
+    productPrice:String,
+    changeNameValue:(String) -> Unit,
+    changePriceValue:(String) -> Unit,
+    onDismiss: () -> Unit,
+    onAddProduct: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = { onDismiss() }, // Al hacer click fuera del diálogo se cierra
+        title = { Text("Añadir Producto") },
+        text = {
+            Column {
+                OutlinedTextField(
+                    value = productName,
+                    onValueChange = {
+                        changeNameValue(it)
+                                    },
+                    label = { Text("Nombre del Producto") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                OutlinedTextField(
+                    value = productPrice,
+                    onValueChange = {
+                        changePriceValue(it)
+                    },
+                    label = { Text("Precio del Producto") },
+                    modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        keyboardType = KeyboardType.Number
+                    )
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    if (productName.isNotEmpty() && productPrice.isNotEmpty()) {
+                        onAddProduct()
+                    }
+                }
+            ) {
+                Text("Añadir")
+            }
+        },
+        dismissButton = {
+            Button(onClick = onDismiss) {
+                Text("Cancelar")
+            }
+        }
+    )
 }
 
 @Composable

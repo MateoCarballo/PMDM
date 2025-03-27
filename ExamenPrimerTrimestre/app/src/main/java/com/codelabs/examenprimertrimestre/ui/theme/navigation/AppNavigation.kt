@@ -24,7 +24,8 @@ fun AppNavigation(navController: NavHostController) {
         composable(AppScreens.ListaCompraScreen.route) {
             ListaCompra(
                 navigateBack = { navController.popBackStack() },
-                toDetailScreen = { productName, productPrice, productQuantity -> navController.navigate(AppScreens.DetalleScreen.route + "/$productName" + "/$productPrice" + "/$productQuantity") }
+                toDetailScreen = { productName, productPrice, productQuantity
+                    -> navController.navigate(AppScreens.DetalleScreen.route + "/$productName" + "/$productPrice" + "/$productQuantity") }
             )
         }
         composable(
