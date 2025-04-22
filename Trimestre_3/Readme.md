@@ -60,10 +60,30 @@ A medida que avanzo en mis estudios y proyectos personales, este portfolio irá 
 
 Aquí iré recopilando herramientas, assets gráficos, sonoros o utilitarios que utilice a lo largo de mis proyectos en Unity.
 
-<div align="center">
+<div align="left">
 
-[![Asset Store](https://img.shields.io/badge/Unity-Asset%20Store-000000?logo=unity&style=for-the-badge)](https://assetstore.unity.com/)
-[![itch.io](https://img.shields.io/badge/itch.io-Juegos%20y%20Assets-FA5C5C?logo=itchdotio&style=for-the-badge)](https://itch.io/)
+<!-- Unity Asset Store -->
+<a href="https://assetstore.unity.com/" target="_blank" style="display: inline-block; text-decoration: none; background-color: #CCCCCC; color: black; padding: 10px 15px; border-radius: 8px; font-family: sans-serif; font-weight: bold; margin: 4px;">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Unity_Technologies_logo.svg" alt="Unity" height="20" style="vertical-align: middle; margin-right: 8px;">
+  Unity Asset Store
+</a>
+
+
+<!-- itch.io -->
+<a href="https://itch.io/" target="_blank" style="display: inline-block; text-decoration: none; background-color: #FA5C5C; color: white; padding: 10px 15px; border-radius: 8px; font-family: sans-serif; font-weight: bold; margin: 4px;">
+  <img src="https://itch.io/static/images/itchio-textless-white.svg" alt="itch.io" height="20" style="vertical-align: middle; margin-right: 8px;">
+  itch.io - Juegos y Assets
+</a>
+
+<!-- Kenney -->
+<a href="https://kenney.nl/" target="_blank" style="display: inline-block; text-decoration: none; background-color: #4CAF50; color: white; padding: 10px 15px; border-radius: 8px; font-family: sans-serif; font-weight: bold; margin: 4px;">
+  <img src="https://kenney.nl/data/img/logo.png" alt="Kenney" height="20" style="vertical-align: middle; margin-right: 8px;">
+  Recursos Kenney
+</a>
+
+
+
+
 
 </div>
 
