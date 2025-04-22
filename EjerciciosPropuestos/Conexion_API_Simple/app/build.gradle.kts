@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "ejercicios.trivia"
+    namespace = "com.codelabs.conexion_api_simple"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "ejercicios.trivia"
+        applicationId = "com.codelabs.conexion_api_simple"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -40,14 +40,12 @@ android {
 }
 
 dependencies {
-    //Dependencias para conexion con API
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization.json)
 
 
-    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

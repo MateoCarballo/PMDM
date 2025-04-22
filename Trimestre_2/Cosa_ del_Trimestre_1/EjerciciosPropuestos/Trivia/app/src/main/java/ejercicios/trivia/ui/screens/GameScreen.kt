@@ -1,86 +1,135 @@
 package ejercicios.trivia.ui.screens
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ejercicios.trivia.data.Question
-import ejercicios.trivia.data.Questions
-import ejercicios.trivia.ui.state.TrivialViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import ejercicios.trivia.model.Question
+import ejercicios.trivia.ui.state.ViewModelProvider
+import ejercicios.trivia.ui.state.gameScreen.GameScreenViewModel
 
 @Composable
 fun GameScreen(
-    modifier: Modifier,
+    toResultScreen: (String, String) -> Unit,
+    gameScreenVM: GameScreenViewModel = viewModel(factory = ViewModelProvider.Factory),
 ) {
-    val trivialVM: TrivialViewModel = remember {TrivialViewModel()}
-    val state = trivialVM.state.collectAsState()
+    val state = gameScreenVM.state.collectAsState()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Text(
-            text = "Pregunta ${state.value.usedQuestions.size + 1} / ${state.value.rounds}",
-            fontSize = MaterialTheme.typography.headlineSmall.fontSize,
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Question(
-            question = state.value.question,
-            selectedNumerIndex = state.value.selectedAnswer,
-            isAnswered = state.value.answeredQuestion,
-            amICorrect = {numberOption -> trivialVM.amICorrect(numberOption)},
-            // TODO Dani porque asi no se ejecuta correctamente ?
-            selectOption = trivialVM::selectOption
-            //selectOption = { index -> trivialVM.selectOption(index) }
-        )
+    LaunchedEffect(Unit) {
+        gameScreenVM.getAllQuestions(10)
+    }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Boton para confirmar la respuesta
-        Button(
-            enabled = state.value.selectedAnswer != -1,
+    if (state.value.questionsFromApi.isEmpty()){
+        LoadingScreen()
+    }else{
+        Column(
             modifier = Modifier
-                .fillMaxWidth(),
-            onClick = {
-                trivialVM.changeAnsweredQuestionValue()
-                if (state.value.answeredQuestion) {
-                    trivialVM.updateQuesion()
-                    if (state.value.correctAnswers == state.value.selectedAnswer)trivialVM.addCorrectAnswer()
-                }
-
-                if (state.value.usedQuestions.size == state.value.rounds) {
-                    // TODO navegar hacia pantalla final
-                }
-            }
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
         ) {
             Text(
-                text = if(state.value.rounds > state.value.usedQuestions.size) {
-                    if (state.value.answeredQuestion) "Continuar" else "Responder"
-                }else{
-                    "Mostrar Resultados"
+                text = "Pregunta ${state.value.numberOfQuestionAnswered + 1} / ${state.value.rounds}",
+                fontSize = MaterialTheme.typography.headlineSmall.fontSize,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            if (state.value.question != null){
+                Question(
+                    question = state.value.question,
+                    selectedNumerIndex = state.value.selectedAnswer,
+                    isAnswered = state.value.answeredQuestion,
+                    amICorrect = { numberOption -> gameScreenVM.amICorrect(numberOption) },
+                    // TODO Dani porque asi no se ejecuta correctamente ?
+                    selectOption = gameScreenVM::selectOption
+                    //selectOption = { index -> trivialVM.selectOption(index) }
+                )
+            }else{
+                Text("Error al cargar la pregunta")
+            }
+
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Boton para confirmar la respuesta
+            Button(
+                enabled = state.value.selectedAnswer != -1,
+                modifier = Modifier
+                    .fillMaxWidth(),
+                onClick = {
+                    if (!state.value.answeredQuestion) {
+                        // Primero marca la pregunta como respondida
+                        gameScreenVM.changeAnsweredQuestionValue()
+
+                        // Si la respuesta es correcta, sumar un punto
+                        if (state.value.selectedAnswer == state.value.question?.correctAnswerIndex) {
+                            gameScreenVM.addCorrectAnswer()
+                        }
+                    } else {
+                        // Solo avanza si la pregunta ya fue respondida
+                        if (state.value.numberOfQuestionAnswered + 1 == state.value.rounds) {
+                            toResultScreen(
+                                state.value.correctAnswers.toString(),
+                                state.value.rounds.toString()
+                            )
+                        } else {
+                            gameScreenVM.updateQuestion()
+                        }
+                    }
                 }
+            ) {
+                Text(
+                    text = if (state.value.rounds > state.value.numberOfQuestionAnswered) {
+                        if (state.value.answeredQuestion) "Continuar" else "Responder"
+                    } else {
+                        "Mostrar Resultados"
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun LoadingScreen() {
+    // Contenedor centrado en la pantalla
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentSize(Alignment.Center)
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            CircularProgressIndicator() // Indicador de carga
+            Spacer(modifier = Modifier.height(16.dp)) // Espacio entre el círculo y el texto
+            Text(
+                text = "Cargando preguntas...",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.Gray
             )
         }
     }
@@ -88,7 +137,7 @@ fun GameScreen(
 
 @Composable
 fun Question(
-    question: Question = Questions.getRandomQuestion(),
+    question: Question?,
     selectedNumerIndex: Int,
     isAnswered: Boolean,
     amICorrect: (Int) -> Boolean,
@@ -104,21 +153,28 @@ fun Question(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = question.questionText,
+                text = question?.questionText ?: "No tengo pregunta",
                 style = MaterialTheme.typography.bodyLarge
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            for ((index, option) in question.options.withIndex()) {
-                Option(
-                    numberOption = index,
-                    optionText = option,
-                    isAnswered = isAnswered,
-                    amICorrect = amICorrect,
-                    selectOption = { optionSelected -> selectOption(optionSelected) },
-                    selectNumberIndex = selectedNumerIndex,
-                )
+            question?.options?.let {
+                for ((index, option) in question.options.withIndex())
+                {
+                    Option(
+                        numberOption = index,
+                        optionText = option,
+                        isAnswered = isAnswered,
+                        amICorrect = amICorrect,
+                        selectOption = { optionSelected -> selectOption(optionSelected) },
+                        selectNumberIndex = selectedNumerIndex,
+                    )
+                }
+            } ?: run {
+                // Aquí puedes manejar el caso cuando question es null
+                // Por ejemplo, puedes mostrar un mensaje o no hacer nada
+                Text("No hay opciones disponibles.")
             }
         }
 
@@ -164,13 +220,19 @@ fun Option(
 @Preview(showBackground = true)
 @Composable
 fun PreviewQuestion() {
-    Question(correctAnswerIndex = 1, options = listOf("op1", "op2"), questionText = "question text")
+    Question(
+        rawquestionText = TODO(),
+        rawoptions = TODO(),
+        correctAnswerIndex = TODO()
+    )
 }
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun PreviewGameScreen() {
-    GameScreen(modifier = Modifier)
+    GameScreen(
+        toResultScreen = { _, _ -> }, // Se pasa la función correctamente
+    )
 }
 
 

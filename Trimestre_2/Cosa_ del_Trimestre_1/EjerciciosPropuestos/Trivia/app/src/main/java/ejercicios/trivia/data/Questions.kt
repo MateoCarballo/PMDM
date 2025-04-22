@@ -1,14 +1,11 @@
 package ejercicios.trivia.data
 
-data class Question(
-    val questionText: String,
-    val options: List<String>,
-    val correctAnswerIndex: Int
-)
+import ejercicios.trivia.model.Question
 
 class Questions {
     companion object {
         private val f1Questions: List<Question> = listOf(
+            /*
             Question(
                 questionText = "¿Quién ganó el Campeonato Mundial de Fórmula 1 en 2004?",
                 options = listOf(
@@ -143,7 +140,7 @@ class Questions {
                     "Max Verstappen"
                 ),
                 correctAnswerIndex = 3
-            )
+             */
         )
         fun getRandomQuestion(): Question{
             return f1Questions[(0..19).random()]
