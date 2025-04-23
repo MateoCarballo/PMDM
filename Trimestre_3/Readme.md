@@ -81,8 +81,11 @@ Aquí iré recopilando herramientas, assets gráficos, sonoros o utilitarios que
   Recursos Kenney
 </a>
 
-
-
+<!-- Coolors -->
+<a href="https://coolors.co/" target="_blank" style="display: inline-block; text-decoration: none; background-color: #4CAF50; color: white; padding: 10px 15px; border-radius: 8px; font-family: sans-serif; font-weight: bold; margin: 4px;">
+  <img src="https://coolors.co/assets/img/logo.svg" alt="Coolors" height="15" style="vertical-align: middle; margin-right: 8px;">
+  Generador de paletas de colores
+</a>
 
 
 </div>
