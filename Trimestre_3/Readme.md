@@ -62,6 +62,12 @@ Aquí iré recopilando herramientas, assets gráficos, sonoros o utilitarios que
 
 <div align="left">
 
+<!-- Fondos en Movimiento - Tutorial -->
+<a href="https://www.youtube.com/watch?v=CiUTHRVjBv0" target="_blank" style="display: inline-block; text-decoration: none; background-color: #FF0000; color: white; padding: 10px 15px; border-radius: 8px; font-family: sans-serif; font-weight: bold; margin: 4px;">
+  <img src="https://www.freeiconspng.com/uploads/youtube-logo-png-transparent-image-5.png" alt="YouTube" height="20" style="vertical-align: middle; margin-right: 8px;">
+  Tutorial: Fondos en Movimiento (Parallax)
+</a>
+
 <!-- Unity Asset Store -->
 <a href="https://assetstore.unity.com/" target="_blank" style="display: inline-block; text-decoration: none; background-color: #CCCCCC; color: black; padding: 10px 15px; border-radius: 8px; font-family: sans-serif; font-weight: bold; margin: 4px;">
   <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Unity_Technologies_logo.svg" alt="Unity" height="20" style="vertical-align: middle; margin-right: 8px;">
