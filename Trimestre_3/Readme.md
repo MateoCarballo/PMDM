@@ -24,7 +24,7 @@ Bienvenido a mi colección de videojuegos desarrollados con **Unity** y programa
 ### 🧱 Arkanoid Breakout
 
 <div align="center">
-  <img src="https://i.imgur.com/5X3Zm5F.gif" alt="Arkanoid Gameplay" width="400" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"/>
+  <img src="https://i.imgur.com/feOT5fU.jpeg" alt="Arkanoid Gameplay" width="400" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"/>
 </div>
 
 > Versión moderna con power-ups y efectos visuales.
