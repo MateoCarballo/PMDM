@@ -39,7 +39,7 @@ Bienvenido a mi colección de videojuegos desarrollados con **Unity** y programa
 ### 🕹️ GameJam Project 
 
 <div align="center">
-  <img src="https://i.imgur.com/9pDz3jW.png" alt="Game Jam Concept Art" width="600" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"/>
+  <img src="https://imgs.search.brave.com/ouDXACs-6QHShAxSQ1Fg0qwyGYPJDDbq92Ik14vrQWQ/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9pLjk4/Nzk2Ny54eXovc2Ny/ZWVuc2hvdC81NS9l/LzE3NjIxX2VlYWYz/ZGE0Zjc2NjUxZjE5/MWIwYTI2NTkxYmQw/OGQ0MGJkOWMyNmYu/cG5n" alt="Game Jam Concept Art" width="600" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"/>
 </div>
 
 > Próximo desarrollo para competencia de 48 horas.
