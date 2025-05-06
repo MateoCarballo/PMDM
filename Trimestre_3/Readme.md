@@ -1,8 +1,6 @@
-# � Unity Game Portfolio
+# 🎮 Unity Game Portfolio
 
 Bienvenido a mi colección de videojuegos desarrollados con **Unity** y programados en **C#**. Cada proyecto incluye código fuente documentado, assets y detalles de implementación.
-
-Este portfolio evoluciona constantemente con mis estudios y proyectos personales. ¡Explora y siéntete libre de contribuir!
 
 ---
 
@@ -11,84 +9,62 @@ Este portfolio evoluciona constantemente con mis estudios y proyectos personales
 ### 🏓 Pong Classic
 
 <div align="center">
-  <img src="https://i.imgur.com/LgsjDh8.gif" alt="Pong Gameplay" width="40%" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"/>
+  <img src="https://i.imgur.com/LgsjDh8.gif" alt="Pong Gameplay" width="400" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"/>
 </div>
 
-> Recreación fiel del clásico arcade con mecánicas mejoradas:
-> - Sistema de física personalizado
-> - Control de velocidad adaptable
-> - Modo PVP local
-> - Menús interactivos
+> Recreación del clásico arcade con mecánicas mejoradas.
 
-![Unity](https://img.shields.io/badge/Engine-Unity-000000?logo=unity&style=flat-square)
-![C#](https://img.shields.io/badge/Code-C%23-178600?logo=csharp&style=flat-square)
-![2D](https://img.shields.io/badge/Graphics-2D-00B4FF?style=flat-square)
-![Multiplayer](https://img.shields.io/badge/Mode-Local%20PVP-FFCA28?style=flat-square)
+![Tech](https://img.shields.io/badge/Unity-2020.3+-black?logo=unity)
+![Language](https://img.shields.io/badge/C%23-8.0+-239120?logo=csharp)
 
-🔗 [Acceder al repositorio](https://github.com/MateoCarballo/Pong) | 📝 [Ver documentación técnica](/docs/Pong_Design.md)
+🔗 [Repositorio](https://github.com/MateoCarballo/Pong)
 
 ---
 
 ### 🧱 Arkanoid Breakout
 
 <div align="center">
-  <img src="https://i.imgur.com/JK7wFQp.gif" alt="Arkanoid Gameplay" width="40%" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"/>
+  <img src="https://i.imgur.com/5X3Zm5F.gif" alt="Arkanoid Gameplay" width="400" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"/>
 </div>
 
-> Versión moderna del clásico Breakout con características extendidas:
-> - Sistema de power-ups (expandir paleta, multiball, imán)
-> - 5 niveles progresivos con mecánicas únicas
-> - Efectos de partículas y VFX
-> - Sistema de scoring con combos
-> - Menú de pausa con opciones
+> Versión moderna con power-ups y efectos visuales.
 
-![Unity](https://img.shields.io/badge/Engine-Unity-000000?logo=unity&style=flat-square)
-![C#](https://img.shields.io/badge/Code-C%23-178600?logo=csharp&style=flat-square)
-![2D](https://img.shields.io/badge/Graphics-2D-00B4FF?style=flat-square)
-![Singleplayer](https://img.shields.io/badge/Mode-Single%20Player-4CAF50?style=flat-square)
-![Progress](https://img.shields.io/badge/Status-In%20Development-FF5722?style=flat-square)
+![Features](https://img.shields.io/badge/PowerUps-6+-brightgreen)
+![Levels](https://img.shields.io/badge/Niveles-5-blue)
 
-🔗 [Explorar código fuente](https://github.com/MateoCarballo/Arkanoid) | 🎮 [Probar demo web](/builds/web)
+🔗 [Código fuente](https://github.com/MateoCarballo/Arkanoid)
 
 ---
 
-### 🚀 GameJam Project (Coming Soon)
+### 🕹️ GameJam Project 
 
 <div align="center">
-  <img src="https://i.imgur.com/3PX7b3W.png" alt="Game Jam Teaser" width="70%" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"/>
+  <img src="https://i.imgur.com/9pDz3jW.png" alt="Game Jam Concept Art" width="600" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"/>
 </div>
 
-> Próximo desarrollo para competencia de 48 horas:
-> - Temática secreta (se revelará el día del evento)
-> - Enfoque en gameplay innovador
-> - Arte pixel art original
-> - Integración de sonidos procedurales
+> Próximo desarrollo para competencia de 48 horas.
 
-![Unity](https://img.shields.io/badge/Engine-Unity-000000?logo=unity&style=flat-square)
-![C#](https://img.shields.io/badge/Code-C%23-178600?logo=csharp&style=flat-square)
-![2D](https://img.shields.io/badge/Graphics-Pixel%20Art-7C4DFF?style=flat-square)
+![Status](https://img.shields.io/badge/Estado-En%20desarrollo-orange)
+![Style](https://img.shields.io/badge/Estilo-Pixel%20Art-ff69b4)
 
-⏳ Disponible en [Q3 2023]
+⏳ Disponible en Q3 2023
 
 ---
 
-## 🛠️ Recursos Destacados
+## 🛠️ Recursos
 
 <div align="center">
-
-[![Parallax Tutorial](https://img.shields.io/badge/📺_Fondos_Parallax-FF0000?style=for-the-badge&logo=youtube)](https://youtu.be/CiUTHRVjBv0)
-[![Unity Assets](https://img.shields.io/badge/🛍️_Unity_Asset_Store-000000?style=for-the-badge&logo=unity)](https://assetstore.unity.com/)
-[![Game Assets](https://img.shields.io/badge/🎨_Kenney_Assets-4CAF50?style=for-the-badge)](https://kenney.nl/)
-[![Color Tools](https://img.shields.io/badge/🎨_Coolors_Palettes-4CAF50?style=for-the-badge)](https://coolors.co/)
-
+  <a href="https://youtu.be/CiUTHRVjBv0" target="_blank">
+    <img src="https://img.shields.io/badge/Tutorial-Parallax_Scrolling-FF0000?logo=youtube" alt="Tutorial Parallax">
+  </a>
+  <a href="https://kenney.nl/" target="_blank">
+    <img src="https://img.shields.io/badge/Assets-Kenney-4CAF50" alt="Kenney Assets">
+  </a>
 </div>
 
 ---
 
 ## 📬 Contacto
 
-¿Preguntas, colaboraciones o feedback?
-
-[![GitHub](https://img.shields.io/badge/-@MateoCarballo-181717?style=for-the-badge&logo=github)](https://github.com/MateoCarballo)
-[![Twitter](https://img.shields.io/badge/-@Usuario-1DA1F2?style=for-the-badge&logo=twitter)](https://twitter.com/)
-[![Email](https://img.shields.io/badge/-Email-D14836?style=for-the-badge&logo=gmail)](mailto:tu@email.com)
+[![GitHub](https://img.shields.io/badge/GitHub-MateoCarballo-181717?logo=github)](https://github.com/MateoCarballo)
+[![Twitter](https://img.shields.io/badge/Twitter-@Usuario-1DA1F2?logo=twitter)](https://twitter.com/)
