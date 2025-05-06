@@ -1,98 +1,94 @@
+# � Unity Game Portfolio
 
-# 🎮 Unity Game Portfolio
+Bienvenido a mi colección de videojuegos desarrollados con **Unity** y programados en **C#**. Cada proyecto incluye código fuente documentado, assets y detalles de implementación.
 
-Bienvenido a mi colección de videojuegos desarrollados con **Unity** y programados en **C#**. Cada juego tiene su propio repositorio, con su documentación, assets y código fuente.
-
-A medida que avanzo en mis estudios y proyectos personales, este portfolio irá creciendo. ¡Gracias por pasarte!
-
----
-
-## 📦 Proyectos
-
-### 🕹️ Pong
-
-<div align="center">
-  <!-- 🔧 Reemplazá esta imagen con una captura del juego -->
-  <img src="https://i.imgur.com/LgsjDh8.gif" alt="Pong Game Screenshot" width="20%" style="border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.2);"/>
-</div>
-
-> Versión clásica del Pong, desarrollada desde cero en Unity. Mecánicas simples, físicas básicas y UI funcional. En esta primera versión podemos jugar unicamente en el modod PVP. 
-
-![Unity](https://img.shields.io/badge/Engine-Unity-black?logo=unity&style=for-the-badge)
-![C#](https://img.shields.io/badge/Language-C%23-239120?logo=csharp&style=for-the-badge)
-
-![2D](https://img.shields.io/badge/Style-2D-blue?style=for-the-badge)
-![PVP](https://img.shields.io/badge/Mode-PVP-yellow?style=for-the-badge)
-![Beginner](https://img.shields.io/badge/Level-Beginner-lightgrey?style=for-the-badge)
-
-🔗 [Ver repositorio](https://github.com/MateoCarballo/Pong)
+Este portfolio evoluciona constantemente con mis estudios y proyectos personales. ¡Explora y siéntete libre de contribuir!
 
 ---
 
-### 🚀 GameJam *(Próximamente)*
+## 🕹️ Proyectos
+
+### 🏓 Pong Classic
 
 <div align="center">
-  <!-- 🔧 Cuando tengas una imagen, reemplazá esta -->
-  <img src="https://via.placeholder.com/600x300.png?text=Game+Jam+Preview" alt="Game Jam Preview" width="70%" style="border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.2);"/>
+  <img src="https://i.imgur.com/LgsjDh8.gif" alt="Pong Gameplay" width="40%" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"/>
 </div>
 
-> Proyecto a desarrollar durante una **Game Jam**. En este entregable de la materia demostraremos todo lo aprendido en el bloque de Unity y desarrollo de videojuegos 2D.
+> Recreación fiel del clásico arcade con mecánicas mejoradas:
+> - Sistema de física personalizado
+> - Control de velocidad adaptable
+> - Modo PVP local
+> - Menús interactivos
 
+![Unity](https://img.shields.io/badge/Engine-Unity-000000?logo=unity&style=flat-square)
+![C#](https://img.shields.io/badge/Code-C%23-178600?logo=csharp&style=flat-square)
+![2D](https://img.shields.io/badge/Graphics-2D-00B4FF?style=flat-square)
+![Multiplayer](https://img.shields.io/badge/Mode-Local%20PVP-FFCA28?style=flat-square)
 
-![Unity](https://img.shields.io/badge/Engine-Unity-black?logo=unity&style=for-the-badge)
-![C#](https://img.shields.io/badge/Language-C%23-239120?logo=csharp&style=for-the-badge)
+🔗 [Acceder al repositorio](https://github.com/MateoCarballo/Pong) | 📝 [Ver documentación técnica](/docs/Pong_Design.md)
 
+---
 
-![2D](https://img.shields.io/badge/Style-2D-blue?style=for-the-badge)
-![Single Player](https://img.shields.io/badge/Mode-Single--Player-green?style=for-the-badge)
-![Game Jam](https://img.shields.io/badge/Type-Game%20Jam-red?style=for-the-badge)
+### 🧱 Arkanoid Breakout
 
-🔗 Repositorio: *aún no creado*
+<div align="center">
+  <img src="https://i.imgur.com/JK7wFQp.gif" alt="Arkanoid Gameplay" width="40%" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"/>
+</div>
 
+> Versión moderna del clásico Breakout con características extendidas:
+> - Sistema de power-ups (expandir paleta, multiball, imán)
+> - 5 niveles progresivos con mecánicas únicas
+> - Efectos de partículas y VFX
+> - Sistema de scoring con combos
+> - Menú de pausa con opciones
+
+![Unity](https://img.shields.io/badge/Engine-Unity-000000?logo=unity&style=flat-square)
+![C#](https://img.shields.io/badge/Code-C%23-178600?logo=csharp&style=flat-square)
+![2D](https://img.shields.io/badge/Graphics-2D-00B4FF?style=flat-square)
+![Singleplayer](https://img.shields.io/badge/Mode-Single%20Player-4CAF50?style=flat-square)
+![Progress](https://img.shields.io/badge/Status-In%20Development-FF5722?style=flat-square)
+
+🔗 [Explorar código fuente](https://github.com/MateoCarballo/Arkanoid) | 🎮 [Probar demo web](/builds/web)
+
+---
+
+### 🚀 GameJam Project (Coming Soon)
+
+<div align="center">
+  <img src="https://i.imgur.com/3PX7b3W.png" alt="Game Jam Teaser" width="70%" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"/>
+</div>
+
+> Próximo desarrollo para competencia de 48 horas:
+> - Temática secreta (se revelará el día del evento)
+> - Enfoque en gameplay innovador
+> - Arte pixel art original
+> - Integración de sonidos procedurales
+
+![Unity](https://img.shields.io/badge/Engine-Unity-000000?logo=unity&style=flat-square)
+![C#](https://img.shields.io/badge/Code-C%23-178600?logo=csharp&style=flat-square)
+![2D](https://img.shields.io/badge/Graphics-Pixel%20Art-7C4DFF?style=flat-square)
+
+⏳ Disponible en [Q3 2023]
+
+---
+
+## 🛠️ Recursos Destacados
+
+<div align="center">
+
+[![Parallax Tutorial](https://img.shields.io/badge/📺_Fondos_Parallax-FF0000?style=for-the-badge&logo=youtube)](https://youtu.be/CiUTHRVjBv0)
+[![Unity Assets](https://img.shields.io/badge/🛍️_Unity_Asset_Store-000000?style=for-the-badge&logo=unity)](https://assetstore.unity.com/)
+[![Game Assets](https://img.shields.io/badge/🎨_Kenney_Assets-4CAF50?style=for-the-badge)](https://kenney.nl/)
+[![Color Tools](https://img.shields.io/badge/🎨_Coolors_Palettes-4CAF50?style=for-the-badge)](https://coolors.co/)
+
+</div>
+
+---
 
 ## 📬 Contacto
 
-> Si querés ver más proyectos, sugerencias o colaborar, podés escribirme o seguirme en [GitHub](https://github.com/MateoCarballo).
+¿Preguntas, colaboraciones o feedback?
 
----
-
- ### 🎨 Recursos y Assets
-
-Aquí iré recopilando herramientas, assets gráficos, sonoros o utilitarios que utilice a lo largo de mis proyectos en Unity.
-
-<div align="left">
-
-<!-- Fondos en Movimiento - Tutorial -->
-<a href="https://www.youtube.com/watch?v=CiUTHRVjBv0" target="_blank" style="display: inline-block; text-decoration: none; background-color: #FF0000; color: white; padding: 10px 15px; border-radius: 8px; font-family: sans-serif; font-weight: bold; margin: 4px;">
-  <img src="https://www.freeiconspng.com/uploads/youtube-logo-png-transparent-image-5.png" alt="YouTube" height="20" style="vertical-align: middle; margin-right: 8px;">
-  Tutorial: Fondos en Movimiento (Parallax)
-</a>
-
-<!-- Unity Asset Store -->
-<a href="https://assetstore.unity.com/" target="_blank" style="display: inline-block; text-decoration: none; background-color: #CCCCCC; color: black; padding: 10px 15px; border-radius: 8px; font-family: sans-serif; font-weight: bold; margin: 4px;">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Unity_Technologies_logo.svg" alt="Unity" height="20" style="vertical-align: middle; margin-right: 8px;">
-  Unity Asset Store
-</a>
-
-
-<!-- itch.io -->
-<a href="https://itch.io/" target="_blank" style="display: inline-block; text-decoration: none; background-color: #FA5C5C; color: white; padding: 10px 15px; border-radius: 8px; font-family: sans-serif; font-weight: bold; margin: 4px;">
-  <img src="https://itch.io/static/images/itchio-textless-white.svg" alt="itch.io" height="20" style="vertical-align: middle; margin-right: 8px;">
-  itch.io - Juegos y Assets
-</a>
-
-<!-- Kenney -->
-<a href="https://kenney.nl/" target="_blank" style="display: inline-block; text-decoration: none; background-color: #4CAF50; color: white; padding: 10px 15px; border-radius: 8px; font-family: sans-serif; font-weight: bold; margin: 4px;">
-  <img src="https://kenney.nl/data/img/logo.png" alt="Kenney" height="20" style="vertical-align: middle; margin-right: 8px;">
-  Recursos Kenney
-</a>
-
-<!-- Coolors -->
-<a href="https://coolors.co/" target="_blank" style="display: inline-block; text-decoration: none; background-color: #4CAF50; color: white; padding: 10px 15px; border-radius: 8px; font-family: sans-serif; font-weight: bold; margin: 4px;">
-  <img src="https://coolors.co/assets/img/logo.svg" alt="Coolors" height="15" style="vertical-align: middle; margin-right: 8px;">
-  Generador de paletas de colores
-</a>
-
-
-</div>
-
+[![GitHub](https://img.shields.io/badge/-@MateoCarballo-181717?style=for-the-badge&logo=github)](https://github.com/MateoCarballo)
+[![Twitter](https://img.shields.io/badge/-@Usuario-1DA1F2?style=for-the-badge&logo=twitter)](https://twitter.com/)
+[![Email](https://img.shields.io/badge/-Email-D14836?style=for-the-badge&logo=gmail)](mailto:tu@email.com)
