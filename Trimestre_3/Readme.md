@@ -32,7 +32,7 @@ Bienvenido a mi colección de videojuegos desarrollados con **Unity** y programa
 ![Features](https://img.shields.io/badge/PowerUps-6+-brightgreen)
 ![Levels](https://img.shields.io/badge/Niveles-5-blue)
 
-🔗 [Código fuente](https://github.com/MateoCarballo/Arkanoid)
+🔗 [Código fuente](https://github.com/MateoCarballo/Breakout)
 
 ---
 
@@ -47,7 +47,7 @@ Bienvenido a mi colección de videojuegos desarrollados con **Unity** y programa
 ![Status](https://img.shields.io/badge/Estado-En%20desarrollo-orange)
 ![Style](https://img.shields.io/badge/Estilo-Pixel%20Art-ff69b4)
 
-⏳ Disponible en Q3 2023
+⏳ Disponible en Q2 2025
 
 ---
 
