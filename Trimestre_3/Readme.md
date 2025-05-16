@@ -47,7 +47,7 @@ Bienvenido a mi colección de videojuegos desarrollados con **Unity** y programa
 ![Status](https://img.shields.io/badge/Estado-En%20desarrollo-orange)
 ![Style](https://img.shields.io/badge/Estilo-Pixel%20Art-ff69b4)
 
-⏳ Disponible en Q2 2025
+🔗 [Código fuente](https://github.com/MateoCarballo/shmup)
 
 ---
 
